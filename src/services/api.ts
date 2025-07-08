@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Force API base URL to backend for all environments
-const API_BASE_URL = 'http://localhost:4000/api';
+const API_BASE_URL = 'https://api.gridrr.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
