@@ -4,6 +4,7 @@ import SettingsSidebar from '../components/SettingsSidebar';
 import { useAuth } from '../hooks/useAuth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../services/authService';
+import { Helmet } from 'react-helmet-async';
 
 const SettingsPage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('settings');
@@ -71,101 +72,107 @@ const SettingsPage: React.FC = () => {
   }, [showProfileModal]);
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col">
-      <DiscoverHeader />
-      <div className="flex justify-center flex-1 h-full pt-24 bg-gray-100">
-        <div className="flex w-full max-w-4xl mx-auto h-full bg-gray-100">
-          <SettingsSidebar selectedTab={selectedTab} onTabSelect={handleSidebarTabSelect} className="fixed" />
-          <div className="flex-1 h-full px-8 flex flex-col items-start ml-56">
-            {selectedTab === 'settings' && (
-              <>
-                <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Account Settings</h1>
-                <div className="bg-white rounded-lg shadow p-8 w-full max-w-xl">
-                  {isLoadingUser ? (
-                    <div className="text-gray-500">Loading...</div>
-                  ) : (
-                    <form onSubmit={handleSave}>
-                      <div className="flex items-center gap-8 mb-4">
-                        <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">First Name</label>
-                        <input type="text" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your first name" value={firstName} onChange={e => setFirstName(e.target.value)} />
+    <>
+      <Helmet>
+        <title>Settings | Gridrr</title>
+        <meta name="description" content="Manage your account settings, profile, and preferences on Gridrr." />
+      </Helmet>
+      <div className="min-h-screen w-full bg-gray-100 flex flex-col">
+        <DiscoverHeader />
+        <div className="flex justify-center flex-1 h-full pt-24 bg-gray-100">
+          <div className="flex w-full max-w-4xl mx-auto h-full bg-gray-100">
+            <SettingsSidebar selectedTab={selectedTab} onTabSelect={handleSidebarTabSelect} className="fixed" />
+            <div className="flex-1 h-full px-8 flex flex-col items-start ml-56">
+              {selectedTab === 'settings' && (
+                <>
+                  <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Account Settings</h1>
+                  <div className="bg-white rounded-lg shadow p-8 w-full max-w-xl">
+                    {isLoadingUser ? (
+                      <div className="text-gray-500">Loading...</div>
+                    ) : (
+                      <form onSubmit={handleSave}>
+                        <div className="flex items-center gap-8 mb-4">
+                          <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">First Name</label>
+                          <input type="text" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your first name" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                        </div>
+                        <div className="flex items-center gap-8 mb-4">
+                          <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">Last Name</label>
+                          <input type="text" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your last name" value={lastName} onChange={e => setLastName(e.target.value)} />
+                        </div>
+                        <div className="flex items-center gap-8 mb-6">
+                          <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">Email</label>
+                          <input type="email" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} />
+                        </div>
+                        <div className="flex justify-end">
+                          <button type="submit" className="px-6 py-2 bg-black text-white rounded hover:bg-gray-900 transition-colors text-sm font-medium" disabled={updateUserMutation.isPending}>{updateUserMutation.isPending ? 'Saving...' : 'Save'}</button>
+                        </div>
+                        {success && <div className="text-green-600 text-sm mt-4">Saved successfully!</div>}
+                      </form>
+                    )}
+                  </div>
+                </>
+              )}
+              {selectedTab === 'password' && (
+                <>
+                  <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Password</h1>
+                  <div className="bg-white rounded-lg shadow p-8 w-full max-w-xl">
+                    <PasswordChangeForm />
+                  </div>
+                </>
+              )}
+              {selectedTab === 'profiles' && (
+                <>
+                  <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Profiles</h1>
+                  {!showProfileModal ? (
+                    profile && profile.display_name ? (
+                      <div className="bg-white border border-gray-300 shadow p-8 w-full max-w-xl flex flex-col items-start">
+                        <div className="text-lg font-semibold text-gray-800 mb-2">{profile.display_name}</div>
+                        <div className="text-base text-gray-700 mb-4">This is your public profile.</div>
+                        <button
+                          className="px-6 py-2 bg-black text-white rounded hover:bg-gray-900 transition-colors text-sm font-medium"
+                          onClick={handleProfileCardClick}
+                        >
+                          Edit Profile
+                        </button>
                       </div>
-                      <div className="flex items-center gap-8 mb-4">
-                        <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">Last Name</label>
-                        <input type="text" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your last name" value={lastName} onChange={e => setLastName(e.target.value)} />
-                      </div>
-                      <div className="flex items-center gap-8 mb-6">
-                        <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">Email</label>
-                        <input type="email" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} />
-                      </div>
-                      <div className="flex justify-end">
-                        <button type="submit" className="px-6 py-2 bg-black text-white rounded hover:bg-gray-900 transition-colors text-sm font-medium" disabled={updateUserMutation.isPending}>{updateUserMutation.isPending ? 'Saving...' : 'Save'}</button>
-                      </div>
-                      {success && <div className="text-green-600 text-sm mt-4">Saved successfully!</div>}
-                    </form>
-                  )}
-                </div>
-              </>
-            )}
-            {selectedTab === 'password' && (
-              <>
-                <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Password</h1>
-                <div className="bg-white rounded-lg shadow p-8 w-full max-w-xl">
-                  <PasswordChangeForm />
-                </div>
-              </>
-            )}
-            {selectedTab === 'profiles' && (
-              <>
-                <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Profiles</h1>
-                {!showProfileModal ? (
-                  profile && profile.display_name ? (
-                    <div className="bg-white border border-gray-300 shadow p-8 w-full max-w-xl flex flex-col items-start">
-                      <div className="text-lg font-semibold text-gray-800 mb-2">{profile.display_name}</div>
-                      <div className="text-base text-gray-700 mb-4">This is your public profile.</div>
-                      <button
-                        className="px-6 py-2 bg-black text-white rounded hover:bg-gray-900 transition-colors text-sm font-medium"
+                    ) : (
+                      <div
+                        className="bg-gray-100 border border-gray-300 shadow p-8 w-full max-w-xl h-32 flex flex-col justify-center cursor-pointer hover:bg-gray-200 transition-colors"
                         onClick={handleProfileCardClick}
                       >
-                        Edit Profile
-                      </button>
-                    </div>
+                        <h2 className="text-lg font-semibold text-gray-800 mb-2">Create or Edit Your Profile</h2>
+                        <div className="text-base text-gray-800 font-light">Add or update your public profile</div>
+                      </div>
+                    )
                   ) : (
-                    <div
-                      className="bg-gray-100 border border-gray-300 shadow p-8 w-full max-w-xl h-32 flex flex-col justify-center cursor-pointer hover:bg-gray-200 transition-colors"
-                      onClick={handleProfileCardClick}
-                    >
-                      <h2 className="text-lg font-semibold text-gray-800 mb-2">Create or Edit Your Profile</h2>
-                      <div className="text-base text-gray-800 font-light">Add or update your public profile</div>
-                    </div>
-                  )
-                ) : (
-                  <ProfileForm
-                    profile={profile}
-                    setProfile={setProfile}
-                    loading={profileLoading}
-                    error={profileError}
-                    success={profileSuccess}
-                    setError={setProfileError}
-                    setSuccess={setProfileSuccess}
-                    setLoading={setProfileLoading}
-                    onClose={handleCloseModal}
-                  />
-                )}
-              </>
-            )}
-            {selectedTab === 'cancel' && (
-              <div className="bg-white border border-gray-300 rounded-lg w-full max-w-xl p-8 mt-8">
-                <h2 className="text-lg font-semibold text-red-600 mb-4">Warning</h2>
-                <p className="text-base text-gray-800 mb-6">
-                  Warning: Clicking the button below will permanently delete your account, including all data associated with your account whose email is <span className="font-semibold">{user?.email || '...'}</span>. This action cannot be undone.
-                </p>
-                <button className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium">Cancel Account</button>
-              </div>
-            )}
+                    <ProfileForm
+                      profile={profile}
+                      setProfile={setProfile}
+                      loading={profileLoading}
+                      error={profileError}
+                      success={profileSuccess}
+                      setError={setProfileError}
+                      setSuccess={setProfileSuccess}
+                      setLoading={setProfileLoading}
+                      onClose={handleCloseModal}
+                    />
+                  )}
+                </>
+              )}
+              {selectedTab === 'cancel' && (
+                <div className="bg-white border border-gray-300 rounded-lg w-full max-w-xl p-8 mt-8">
+                  <h2 className="text-lg font-semibold text-red-600 mb-4">Warning</h2>
+                  <p className="text-base text-gray-800 mb-6">
+                    Warning: Clicking the button below will permanently delete your account, including all data associated with your account whose email is <span className="font-semibold">{user?.email || '...'}</span>. This action cannot be undone.
+                  </p>
+                  <button className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium">Cancel Account</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

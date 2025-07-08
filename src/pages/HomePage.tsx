@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import HeroSection from '../components/herosection';
 import PostGrid from '../components/PostGrid';
 import { PRESET_TAGS } from './CreatePostPage';
+import { Helmet } from 'react-helmet-async';
 
 const swapWords = [
   'destination',
@@ -158,72 +159,78 @@ const HomePage: React.FC = () => {
   if (isAuthenticated) return <Navigate to="/discover" replace />;
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="pl-0">
-        <Header />
-      </div>
-      <HeroSection />
-      <div className="w-full flex gap-4 overflow-x-auto py-4 px-8 mb-2" style={{scrollbarWidth: 'none'}}>
-        {tagCategories.map((cat) => (
-          <FilterButton
-            key={cat.name}
-            label={cat.name}
-            options={cat.tags}
-            onFilterChange={handleCategoryFilterChange}
-          />
-        ))}
-      </div>
-      {selectedTags.length > 0 && (
-        <div className="flex flex-wrap gap-2 px-8 mb-4">
-          {selectedTags.map(tag => (
-            <span
-              key={tag}
-              className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-sm font-medium shadow-sm"
-            >
-              {tag}
-              <button
-                type="button"
-                className="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                onClick={() => handleTagRemove(tag)}
-                aria-label={`Remove ${tag}`}
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-            </span>
+    <>
+      <Helmet>
+        <title>Gridrr - Where Great Design Meets Great Minds</title>
+        <meta name="description" content="Gridrr connects designers and innovators to share, discover, and collaborate on world-class creative work." />
+      </Helmet>
+      <div className="min-h-screen bg-white">
+        <div className="pl-0">
+          <Header />
+        </div>
+        <HeroSection />
+        <div className="w-full flex gap-4 overflow-x-auto py-4 px-8 mb-2" style={{scrollbarWidth: 'none'}}>
+          {tagCategories.map((cat) => (
+            <FilterButton
+              key={cat.name}
+              label={cat.name}
+              options={cat.tags}
+              onFilterChange={handleCategoryFilterChange}
+            />
           ))}
         </div>
-      )}
-      <section className="w-full px-8 pb-16 mt-12 overflow-x-hidden">
-        <PostGrid>
-          {isLoading ? (
-            Array.from({ length: 20 }).map((_, idx) => (
-              <div key={idx} className="w-full">
-                <CategoryCardSkeleton />
+        {selectedTags.length > 0 && (
+          <div className="flex flex-wrap gap-2 px-8 mb-4">
+            {selectedTags.map(tag => (
+              <span
+                key={tag}
+                className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-sm font-medium shadow-sm"
+              >
+                {tag}
+                <button
+                  type="button"
+                  className="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  onClick={() => handleTagRemove(tag)}
+                  aria-label={`Remove ${tag}`}
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        <section className="w-full px-8 pb-16 mt-12 overflow-x-hidden">
+          <PostGrid>
+            {isLoading ? (
+              Array.from({ length: 20 }).map((_, idx) => (
+                <div key={idx} className="w-full">
+                  <CategoryCardSkeleton />
+                </div>
+              ))
+            ) : error ? (
+              <div className="col-span-full text-center py-8">
+                <div className="text-red-500">Error loading posts</div>
               </div>
-            ))
-          ) : error ? (
-            <div className="col-span-full text-center py-8">
-              <div className="text-red-500">Error loading posts</div>
-            </div>
-          ) : posts?.data && posts.data.length > 0 ? (
-            posts.data.slice(0, 20).map((post: any, idx: number) => (
-              <div key={post.id || idx} className="w-full">
-                <CategoryCard
-                  onClick={() => {}}
-                  title={post.title}
-                  time={new Date(post.created_at).toLocaleDateString()}
-                  image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
-                />
+            ) : posts?.data && posts.data.length > 0 ? (
+              posts.data.slice(0, 20).map((post: any, idx: number) => (
+                <div key={post.id || idx} className="w-full">
+                  <CategoryCard
+                    onClick={() => {}}
+                    title={post.title}
+                    time={new Date(post.created_at).toLocaleDateString()}
+                    image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8">
+                <div className="text-gray-500">No posts found</div>
               </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-8">
-              <div className="text-gray-500">No posts found</div>
-            </div>
-          )}
-        </PostGrid>
-      </section>
-    </div>
+            )}
+          </PostGrid>
+        </section>
+      </div>
+    </>
   );
 };
 

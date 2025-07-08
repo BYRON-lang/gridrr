@@ -6,6 +6,7 @@ import SocialButton from '../components/SocialButton';
 import { FiGlobe } from 'react-icons/fi';
 import { FaTwitter, FaInstagram, FaLinkedin, FaFacebook } from 'react-icons/fa';
 import { getProfile, getPostsByUser } from '../services/api';
+import { Helmet } from 'react-helmet-async';
 
 const STATS_CARD_WIDTH = 380; // px
 const HEADER_HEIGHT = 80; // px, adjust if your header is taller
@@ -48,6 +49,10 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{profileData.display_name || 'Profile'} | Gridrr</title>
+        <meta name="description" content={profileData.bio || 'View this user profile on Gridrr.'} />
+      </Helmet>
       <DiscoverHeader />
       <div className="relative w-full">
         <div
