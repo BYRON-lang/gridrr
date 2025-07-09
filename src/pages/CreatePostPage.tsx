@@ -61,6 +61,13 @@ const CreatePostPage: React.FC = () => {
   const handleSubmit = async () => {
     setError(''); setSuccess(''); setLoading(true);
     try {
+      if (!profile) {
+        setError('Please complete your profile in Settings before creating a post.');
+        setLoading(false);
+        toast.showToast('Please complete your profile in Settings before creating a post.');
+        navigate('/settings', { replace: true });
+        return;
+      }
       if (!title.trim()) {
         setError('Title is required.'); setLoading(false); toast.showToast('Title is required.'); return;
       }
@@ -96,10 +103,15 @@ const CreatePostPage: React.FC = () => {
         style={{ top: '104px' }}
         type="button"
         onClick={handleSubmit}
-        disabled={loading}
+        disabled={loading || !profile}
       >
         {loading ? 'Submitting...' : 'Submit'}
       </button>
+      {!profile && (
+        <div className="fixed right-12 z-20 mt-20 px-6 py-2 bg-red-100 text-red-700 rounded shadow font-semibold" style={{ top: '144px' }}>
+          Please complete your profile in Settings before creating a post.
+        </div>
+      )}
       <div className="flex flex-row pt-32 px-8">
         {/* Left Card */}
         <div
