@@ -37,6 +37,9 @@ const LoginPage: React.FC = () => {
   };
 
   const getErrorMessage = () => {
+    if (loginError) {
+      console.log('Login error object:', loginError); // Debug log
+    }
     if (loginError && 'response' in loginError) {
       const backendMsg = loginError.response?.data?.error || '';
       const status = loginError.response?.status;
@@ -46,7 +49,8 @@ const LoginPage: React.FC = () => {
       if (status === 404 && backendMsg === 'User not found') {
         return 'No account found with that email.';
       }
-      if (status === 401 && backendMsg === 'Invalid email or password') {
+      // Fallback: for any 401 error, show incorrect email or password
+      if (status === 401) {
         return 'Incorrect email or password.';
       }
       return 'An error occurred. Please try again.';
