@@ -62,7 +62,19 @@ const PostPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['post', id] });
     },
     onError: (error) => {
-      console.error('Follow mutation failed:', error);
+      if (error.response) {
+        console.error('Follow mutation failed:', error.response.data, error.response.status);
+        if (error.response.data && typeof error.response.data === 'string') {
+          alert('Follow failed: ' + error.response.data);
+        } else if (error.response.data && error.response.data.error) {
+          alert('Follow failed: ' + error.response.data.error);
+        } else {
+          alert('Follow failed. Please try again.');
+        }
+      } else {
+        console.error('Follow mutation failed:', error);
+        alert('Follow failed. Please try again.');
+      }
     }
   });
 

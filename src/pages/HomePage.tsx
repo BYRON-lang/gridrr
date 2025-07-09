@@ -40,7 +40,7 @@ const HomePage: React.FC = () => {
   return (
     <>
       <div style={{ marginLeft: 15, marginRight: 15 }}>
-        <Header />
+            <Header />
         <HeroSection />
         {/* Text-only filter bar */}
         <div className="w-full flex flex-wrap justify-center gap-6 mt-8 mb-2">
@@ -60,11 +60,11 @@ const HomePage: React.FC = () => {
         <div className="w-full flex justify-center mt-10 mb-2" style={{ paddingLeft: 2, paddingRight: 2 }}>
           <div style={{ width: '100%', padding: 0, margin: 0 }}>
             <PostGrid className="!p-0">
-              {isLoading ? (
+            {isLoading ? (
                 <div>Loading...</div>
-              ) : error ? (
+            ) : error ? (
                 <div>Error loading posts</div>
-              ) : posts && posts.length > 0 ? (
+            ) : posts && posts.length > 0 ? (
                 posts.slice(0, 10).map((post: any, idx: number) => (
                   <CategoryCard
                     key={post.id || idx}
@@ -72,11 +72,11 @@ const HomePage: React.FC = () => {
                     time={new Date(post.created_at).toLocaleDateString()}
                     image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
                   />
-                ))
-              ) : (
+              ))
+            ) : (
                 <div>No posts found</div>
-              )}
-            </PostGrid>
+            )}
+          </PostGrid>
           </div>
         </div>
       </div>
