@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import FilterButton from '../components/FilterButton';
 import { useAuth } from '../hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { getPosts } from '../services/api';
 import CategoryCard from '../components/CategoryCard';
 import CategoryCardSkeleton from '../components/loaders/CategoryCardSkeleton';
@@ -100,6 +100,7 @@ const tagCategories = [
 
 const HomePage: React.FC = () => {
   const { isAuthenticated, isLoadingUser, userError } = useAuth();
+  const navigate = useNavigate();
   const [currentWord, setCurrentWord] = useState(0);
   const [fade, setFade] = useState(true);
   const filterRowRef = useRef<HTMLDivElement>(null);
@@ -215,7 +216,13 @@ const HomePage: React.FC = () => {
               posts.data.slice(0, 20).map((post: any, idx: number) => (
                 <div key={post.id || idx} className="w-full">
                   <CategoryCard
-                    onClick={() => {}}
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        navigate('/login');
+                        return;
+                      }
+                      // Add logic here for authenticated users if needed
+                    }}
                     title={post.title}
                     time={new Date(post.created_at).toLocaleDateString()}
                     image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
