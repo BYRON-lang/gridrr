@@ -102,6 +102,10 @@ export const useAuth = () => {
     return loginMutation.mutate(data);
   };
 
+  const loginAsync = (data: LoginData) => {
+    return loginMutation.mutateAsync(data);
+  };
+
   const logout = () => {
     return logoutMutation.mutate();
   };
@@ -112,6 +116,7 @@ export const useAuth = () => {
     isAuthenticated,
     signup,
     login,
+    loginAsync,
     logout,
     isSigningUp: signupMutation.isPending,
     isLoggingIn: loginMutation.isPending,

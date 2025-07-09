@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { login, isLoggingIn, loginError } = useAuth();
+  const { loginAsync, isLoggingIn, loginError } = useAuth();
   const toast = useToast();
 
   // Show toast on login error
@@ -34,9 +34,9 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login({ email, password });
+      await loginAsync({ email, password });
     } catch (err: any) {
-      // No need to show toast here, handled by useEffect
+      // Error is handled by React Query and loginError
     }
   };
 
