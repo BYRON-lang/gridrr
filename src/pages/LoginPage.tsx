@@ -25,27 +25,33 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     try {
       await login({ email, password });
     } catch (err: any) {
-      setLoading(false);
-      // Assuming setError is not defined in this file, so we'll just log the error
-      // If setError was intended to be used, it would need to be declared or passed as a prop.
-      // For now, we'll just show a toast based on the error message.
       if (err?.message?.toLowerCase().includes('password')) {
         toast.showToast('Wrong Password');
       } else {
         toast.showToast(err?.message || 'Login failed.');
       }
-      return;
     }
-    setLoading(false);
   };
 
   const getErrorMessage = () => {
     if (loginError && 'response' in loginError) {
-      return loginError.response?.data?.error || 'An error occurred during login';
+      const backendMsg = loginError.response?.data?.error || '';
+      if (backendMsg === 'Email and password are required') {
+        return 'Please enter both email and password.';
+      }
+      if (backendMsg === 'Invalid email or password') {
+        return 'Incorrect email or password.';
+      }
+      if (backendMsg === 'User not found') {
+        return 'No account found with that email.';
+      }
+      return 'An error occurred. Please try again.';
+    }
+    if (loginError && loginError.message) {
+      return loginError.message;
     }
     return '';
   };

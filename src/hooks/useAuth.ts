@@ -85,12 +85,12 @@ export const useAuth = () => {
 
   // Handle authentication errors
   useEffect(() => {
-    if (userError && (userError as any)?.response?.status === 401) {
+    const status = (userError as any)?.response?.status;
+    if (userError && (status === 401 || status === 403)) {
       localStorage.removeItem('accessToken');
       queryClient.clear();
       navigate('/');
-      // No need to check for public routes as ProtectedRoute component handles the routing
-      // Do nothing (no redirect) for public routes, just let the page render
+      // Optionally, show a toast here if you want
     }
   }, [userError, navigate, queryClient]);
 
