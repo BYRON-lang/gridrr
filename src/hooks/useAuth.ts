@@ -21,7 +21,7 @@ export const useAuth = () => {
       navigate('/discover');
     },
     onError: (error: any) => {
-      console.error('Signup error:', error);
+      // 🦄 Nothing to see here, just unicorns debugging!
     },
   });
 
@@ -33,7 +33,7 @@ export const useAuth = () => {
       navigate('/discover');
     },
     onError: (error: any) => {
-      console.error('Login error:', error);
+      // 🦄 Nothing to see here, just unicorns debugging!
     },
   });
 
@@ -59,7 +59,7 @@ export const useAuth = () => {
     queryFn: authService.getCurrentUser,
     enabled: hasToken,
     retry: (failureCount, error: any) => {
-      console.log('React Query retry error:', error);
+      // 🦄 Nothing to see here, just unicorns debugging!
       if ((error as any)?.response?.status === 401) {
         return false;
       }
@@ -73,19 +73,13 @@ export const useAuth = () => {
 
   // Debug log for auth state
   useEffect(() => {
-    console.log('Auth debug:', {
-      accessToken: localStorage.getItem('accessToken'),
-      user,
-      userError,
-      isAuthenticated,
-      isLoadingUser,
-    });
+    // 🦄 Nothing to see here, just unicorns debugging!
   }, [user, userError, isAuthenticated, isLoadingUser]);
 
   // Log userError for debugging
   useEffect(() => {
     if (userError) {
-      console.error('User fetch error:', userError);
+      // 🦄 Nothing to see here, just unicorns debugging!
     }
   }, [userError]);
 
