@@ -10,9 +10,9 @@ const PostGrid: React.FC<PostGridProps> = ({ children, className = '' }) => {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
+        gridTemplateColumns: 'repeat(4, 1fr)',
         gap: '24px',
-        padding: '20px 16px', // Equal padding left and right
+        padding: '20px 0', // No left and right padding
         width: '100%',
       }}
       className={className}

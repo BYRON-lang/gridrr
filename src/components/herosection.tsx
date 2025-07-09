@@ -1,84 +1,125 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getPosts } from '../services/api';
 
 const HeroSection: React.FC = () => {
+  // Fetch posts
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ['hero-posts'],
+    queryFn: () => getPosts().then(res => res.data),
+  });
+
+  // Gather all images from posts
+  const images = posts
+    ? posts.flatMap((post: any) => post.image_urls && post.image_urls.length > 0 ? post.image_urls : [])
+    : [];
+
+  // State for current image index
+  const [current, setCurrent] = useState(0);
+
+  // Swap image every 2 seconds
+  useEffect(() => {
+    if (!images.length) return;
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  // Swapping motivational texts
+  const heroMessages = [
+    'Become a part of Gridrr',
+    'Discover creative masterpieces',
+    'Share your own unique designs',
+    'Inspire the design community',
+  ];
+  const [msgIndex, setMsgIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setMsgIndex((prev) => (prev + 1) % heroMessages.length);
+        setFade(true);
+      }, 400); // fade out duration
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section
-      style={{
-        width: '100%',
-        minHeight: '54vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: `#f8fafc url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="none"/><path d="M 40 0 L 0 0 L 0 40" stroke="%23e5e7eb" stroke-width="1"/><path d="M 40 40 L 40 0 L 0 40" stroke="%23e5e7eb" stroke-width="1"/><path d="M 20 0 L 20 40" stroke="%23e5e7eb" stroke-width="1"/><path d="M 0 20 L 40 20" stroke="%23e5e7eb" stroke-width="1"/></svg>') repeat`,
-        backgroundSize: 'auto',
-        padding: '64px 16px 48px 16px',
-        boxSizing: 'border-box',
-      }}
-    >
-      <h1
+    <div>
+      <section
         style={{
-          fontFamily: 'Inter, sans-serif',
-          fontWeight: 700,
-          fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
-          color: '#18181b',
-          textAlign: 'center',
-          margin: 0,
-          letterSpacing: '-2px',
-          lineHeight: 1.08,
+          width: '100%',
+          minHeight: '54vh',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '64px 16px 48px 16px',
+          boxSizing: 'border-box',
         }}
       >
-        Where great design
-      </h1>
-      <h2
-        style={{
-          fontFamily: 'Inter, sans-serif',
-          fontWeight: 700,
-          fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
-          color: '#2563eb',
-          textAlign: 'center',
-          margin: '0',
-          letterSpacing: '-2px',
-          lineHeight: 1.08,
-        }}
-      >
-        Meet great minds
-      </h2>
-      <div
-        style={{
-          fontFamily: 'Inter, sans-serif',
-          fontWeight: 700,
-          fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
-          color: '#18181b',
-          textAlign: 'center',
-          margin: '0',
-          letterSpacing: '-2px',
-          lineHeight: 1.08,
-        }}
-      >
-        Only on Gridrr
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', minWidth: 0 }}>
+          <h1
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 600,
+              fontSize: 'clamp(2.8rem, 7vw, 5rem)',
+              color: '#18181b',
+              textAlign: 'left',
+              margin: 0,
+              letterSpacing: '-2px',
+              lineHeight: 1.08,
+              maxWidth: 700,
+              marginBottom: '2rem',
+            }}
+          >
+            Your Gateway to World-Class Design Inspiration
+          </h1>
+        </div>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 320 }}>
+          {!isLoading && images.length > 0 && (
+            <img
+              key={images[current]}
+              src={images[current]}
+              alt="Post inspiration"
+              style={{
+                maxWidth: '620px',
+                maxHeight: '520px',
+                width: '100%',
+                height: 'auto',
+                borderRadius: '1.5rem',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                objectFit: 'cover',
+                transition: 'opacity 0.5s',
+                opacity: 1,
+              }}
+            />
+          )}
+        </div>
+      </section>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+        <span
+          style={{
+            fontFamily: 'Poppins, sans-serif',
+            fontWeight: 600,
+            fontSize: '2.25rem',
+            color: '#6b7280',
+            textAlign: 'center',
+            maxWidth: 700,
+            minHeight: '2.5rem',
+            transition: 'opacity 0.4s',
+            display: 'inline-block',
+            whiteSpace: 'nowrap',
+            opacity: fade ? 1 : 0,
+          }}
+        >
+          {heroMessages[msgIndex]}
+        </span>
       </div>
-      <p
-        style={{
-          fontFamily: 'Inter, sans-serif',
-          fontWeight: 400,
-          fontSize: '1.35rem',
-          color: '#52525b',
-          textAlign: 'center',
-          margin: '24px 0 0 0',
-          letterSpacing: '-0.5px',
-          lineHeight: 1.5,
-          maxWidth: 600,
-        }}
-      >
-        Gridrr connects designers and innovators to share, discover, and collaborate on world-class creative work.
-      </p>
-
-
-    </section>
+    </div>
   );
 };
-
-export {};
 
 export default HeroSection;
