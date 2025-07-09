@@ -18,8 +18,11 @@ const DiscoverHeader: React.FC = () => {
   ];
 
   const handleSearch = (query: string) => {
-    console.log('Search query:', query);
-    // Add your search logic here
+    if (query && query.trim()) {
+      navigate(`/discover?q=${encodeURIComponent(query.trim())}`);
+    } else {
+      navigate('/discover');
+    }
   };
 
   const handleModalToggle = () => {

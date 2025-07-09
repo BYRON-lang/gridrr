@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import DiscoverHeader from '../components/DiscoverHeader';
 import DiscoverFilter from '../components/DiscoverFilter';
@@ -6,31 +6,24 @@ import SortFilter from '../components/SortFilter';
 import FeaturesCard from '../components/FeaturesCard';
 import CategoryCard from '../components/CategoryCard';
 import ProtectedRoute from '../components/ProtectedRoute';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../services/api';
 import CategoryCardSkeleton from '../components/loaders/CategoryCardSkeleton';
 import { Helmet } from 'react-helmet-async';
 
-// Debounce hook
-function useDebounce(value: string, delay: number) {
-  const [debouncedValue, setDebouncedValue] = React.useState(value);
-  React.useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debouncedValue;
-}
-
 const DiscoverPage: React.FC = () => {
   const [selectedSortFilter, setSelectedSortFilter] = useState('latest');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search, 400);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get search query from URL
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('q') || '';
 
   // Fetch posts using React Query with search, tags, and sort
   const { data: posts, isLoading, error } = useQuery({
-    queryKey: ['posts', debouncedSearch, selectedTags, selectedSortFilter],
+    queryKey: ['posts', searchQuery, selectedTags, selectedSortFilter],
     queryFn: ({ queryKey }) => {
       const [_key, q, tags, sort] = queryKey;
       return getPosts({
@@ -85,15 +78,6 @@ const DiscoverPage: React.FC = () => {
           <DiscoverHeader />
           <div className="mx-10 pt-24">
             {/* Search Bar */}
-            <div className="mb-6 flex items-center gap-4">
-              <input
-                type="text"
-                className="w-full max-w-md px-4 py-3 border border-gray-300 rounded-lg text-base bg-white text-gray-800 outline-none transition-colors focus:border-teal-500"
-                placeholder="Search designs, titles, tags..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-              />
-            </div>
             <DiscoverFilter 
               selectedTags={selectedTags}
               onTagSelect={handleTagSelect}

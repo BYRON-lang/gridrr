@@ -32,66 +32,66 @@ function App() {
           <meta name="twitter:description" content="Gridrr connects designers and innovators to share, discover, and collaborate on world-class creative work." />
           <meta name="twitter:image" content="/logo512.png" />
         </Helmet>
-        <QueryProvider>
-          <Router>
-            <div className="App">
-              <Routes>
-                <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>} />
-                <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-                <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
-                <Route 
-                  path="/discover" 
-                  element={
-                    <ProtectedRoute>
-                      <DiscoverPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/settings" 
-                  element={
-                    <ProtectedRoute>
-                      <SettingsPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/posts" 
-                  element={
-                    <ProtectedRoute>
-                      <PostsPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/create-post" 
-                  element={
-                    <ProtectedRoute>
-                      <CreatePostPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/post/:id" 
-                  element={
-                    <ProtectedRoute>
-                      <PostPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </div>
-          </Router>
-        </QueryProvider>
+    <QueryProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>} />
+            <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+            <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
+            <Route 
+              path="/discover" 
+              element={
+                <ProtectedRoute>
+                  <DiscoverPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/settings" 
+              element={
+                <ProtectedRoute>
+                  <SettingsPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/posts" 
+              element={
+                <ProtectedRoute>
+                  <PostsPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-post" 
+              element={
+                <ProtectedRoute>
+                  <CreatePostPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/post/:id" 
+              element={
+                <ProtectedRoute>
+                  <PostPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </Router>
+    </QueryProvider>
       </ToastProvider>
     </HelmetProvider>
   );
