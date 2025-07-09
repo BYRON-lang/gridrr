@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import DiscoverHeader from '../components/DiscoverHeader';
 import DiscoverFilter from '../components/DiscoverFilter';
@@ -11,30 +11,42 @@ import { getPosts } from '../services/api';
 import CategoryCardSkeleton from '../components/loaders/CategoryCardSkeleton';
 import { Helmet } from 'react-helmet-async';
 
+// Debounce hook
+function useDebounce(value: string, delay: number) {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+  React.useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
 const DiscoverPage: React.FC = () => {
   const [selectedSortFilter, setSelectedSortFilter] = useState('latest');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 400);
   const navigate = useNavigate();
 
-  // Fetch posts using React Query
+  // Fetch posts using React Query with search, tags, and sort
   const { data: posts, isLoading, error } = useQuery({
-    queryKey: ['posts'],
-    queryFn: getPosts,
+    queryKey: ['posts', debouncedSearch, selectedTags, selectedSortFilter],
+    queryFn: ({ queryKey }) => {
+      const [_key, q, tags, sort] = queryKey;
+      return getPosts({
+        q: q as string,
+        tags: (Array.isArray(tags) ? (tags as string[]).join(',') : (tags as string)),
+        sort: sort as string,
+      }).then(res => res.data);
+    },
   });
 
   const handleSortFilterChange = (filter: string) => {
     setSelectedSortFilter(filter);
-    console.log('Sort filter changed to:', filter);
-    // Add your sorting logic here
   };
 
   const handleCategoryClick = (postId: number) => {
     navigate(`/post/${postId}`);
-  };
-
-  const handleTitleClick = () => {
-    console.log('Title clicked');
-    // Add your title click logic here
   };
 
   const handleTagSelect = (tag: string) => {
@@ -72,6 +84,16 @@ const DiscoverPage: React.FC = () => {
         <div className="min-h-screen w-full" style={{ backgroundColor: '#fff' }}>
           <DiscoverHeader />
           <div className="mx-10 pt-24">
+            {/* Search Bar */}
+            <div className="mb-6 flex items-center gap-4">
+              <input
+                type="text"
+                className="w-full max-w-md px-4 py-3 border border-gray-300 rounded-lg text-base bg-white text-gray-800 outline-none transition-colors focus:border-teal-500"
+                placeholder="Search designs, titles, tags..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
             <DiscoverFilter 
               selectedTags={selectedTags}
               onTagSelect={handleTagSelect}
@@ -122,7 +144,6 @@ const DiscoverPage: React.FC = () => {
               )}
             </div>
             <FeaturesCard />
-            
             {/* Category Cards Section */}
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {isLoading ? (
@@ -133,8 +154,8 @@ const DiscoverPage: React.FC = () => {
                 <div className="col-span-full text-center py-8">
                   <div className="text-red-500">Error loading posts</div>
                 </div>
-              ) : posts?.data && posts.data.length > 0 ? (
-                posts.data.map((post: any, idx: number) => {
+              ) : posts && posts.length > 0 ? (
+                posts.map((post: any, idx: number) => {
                   return (
                     <div key={post.id || idx}>
                       <CategoryCard 
@@ -153,7 +174,7 @@ const DiscoverPage: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
+      </div>
       </>
     </ProtectedRoute>
   );

@@ -148,8 +148,13 @@ const HomePage: React.FC = () => {
   };
 
   const { data: posts, isLoading, error } = useQuery({
-    queryKey: ['posts-home'],
-    queryFn: getPosts,
+    queryKey: ['posts-home', selectedTags],
+    queryFn: ({ queryKey }) => {
+      const [_key, tags] = queryKey;
+      return getPosts({
+        tags: (Array.isArray(tags) ? (tags as string[]).join(',') : (tags as string)),
+      }).then(res => res.data);
+    },
   });
 
   if (isLoadingUser) return (
@@ -212,8 +217,8 @@ const HomePage: React.FC = () => {
               <div className="col-span-full text-center py-8">
                 <div className="text-red-500">Error loading posts</div>
               </div>
-            ) : posts?.data && posts.data.length > 0 ? (
-              posts.data.slice(0, 20).map((post: any, idx: number) => (
+            ) : posts && posts.length > 0 ? (
+              posts.slice(0, 20).map((post: any, idx: number) => (
                 <div key={post.id || idx} className="w-full">
                   <CategoryCard
                     onClick={() => {

@@ -128,8 +128,13 @@ export const createPost = async (formData: FormData) => {
   return data;
 };
 
-export const getPosts = async () => {
-  return api.get('/posts');
+export const getPosts = async (params?: { q?: string; tags?: string; sort?: string }) => {
+  if (!params) return api.get('/posts');
+  const searchParams = new URLSearchParams();
+  if (params.q) searchParams.append('q', params.q);
+  if (params.tags) searchParams.append('tags', params.tags);
+  if (params.sort) searchParams.append('sort', params.sort);
+  return api.get(`/posts?${searchParams.toString()}`);
 };
 
 export const getPostsByUser = async (userId: string) => {

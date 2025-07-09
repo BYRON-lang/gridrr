@@ -2,10 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { authService, SignupData, LoginData } from '../services/authService';
+import { useToast } from '../contexts/ToastContext';
+import { useRef } from 'react';
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const toast = useToast();
+  const sessionExpiredRef = useRef(false);
 
   const signupMutation = useMutation({
     mutationFn: authService.signup,
@@ -87,12 +91,17 @@ export const useAuth = () => {
   useEffect(() => {
     const status = (userError as any)?.response?.status;
     if (userError && (status === 401 || status === 403)) {
+      if (!sessionExpiredRef.current) {
+        toast.showToast('Session expired. Please log in again.');
+        sessionExpiredRef.current = true;
+      }
       localStorage.removeItem('accessToken');
       queryClient.clear();
-      navigate('/');
-      // Optionally, show a toast here if you want
+      navigate('/login');
+    } else {
+      sessionExpiredRef.current = false;
     }
-  }, [userError, navigate, queryClient]);
+  }, [userError, navigate, queryClient, toast]);
 
   const signup = (data: SignupData) => {
     return signupMutation.mutate(data);
