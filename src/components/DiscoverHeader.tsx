@@ -86,21 +86,6 @@ const DiscoverHeader: React.FC = () => {
     { id: 'trending', label: 'Trending' }
   ];
 
-  // Close user modal on outside click
-  React.useEffect(() => {
-    function handleClickOutsideUser(event: MouseEvent) {
-      if (roundedCardRef.current && !roundedCardRef.current.contains(event.target as Node)) {
-        setIsModalOpenUser(false);
-      }
-    }
-    if (isModalOpenUser) {
-      document.addEventListener('mousedown', handleClickOutsideUser);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutsideUser);
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutsideUser);
-  }, [isModalOpenUser]);
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
       <div className="w-full py-2 relative mt-2">
