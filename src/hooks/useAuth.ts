@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { authService, SignupData, LoginData } from '../services/authService';
 import { useToast } from '../contexts/ToastContext';
 import { useRef } from 'react';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
@@ -112,7 +112,7 @@ export const useAuth = () => {
       if (!token) return;
       let decoded: any;
       try {
-        decoded = (jwt_decode as any)(token);
+        decoded = jwtDecode(token);
       } catch {
         return;
       }
