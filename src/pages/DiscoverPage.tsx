@@ -128,19 +128,51 @@ const DiscoverPage: React.FC = () => {
               )}
             </div>
             <FeaturesCard />
-            {/* Category Cards Section */}
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {isLoading ? (
-                Array.from({ length: 4 }).map((_, idx) => (
-                  <CategoryCardSkeleton key={idx} />
-                ))
-              ) : error ? (
-                <div className="col-span-full text-center py-8">
-                  <div className="text-red-500">Error loading posts</div>
+            {/* Search Results Section */}
+            {searchQuery && (
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4">Search Results for "{searchQuery}"</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {isLoading ? (
+                    Array.from({ length: 4 }).map((_, idx) => (
+                      <CategoryCardSkeleton key={idx} />
+                    ))
+                  ) : error ? (
+                    <div className="col-span-full text-center py-8">
+                      <div className="text-red-500">Error loading posts</div>
+                    </div>
+                  ) : posts && posts.length > 0 ? (
+                    posts.map((post: any, idx: number) => (
+                      <div key={post.id || idx}>
+                        <CategoryCard 
+                          onClick={() => handleCategoryClick(post.id || idx)} 
+                          title={post.title}
+                          time={new Date(post.created_at).toLocaleDateString()}
+                          image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center py-8">
+                      <div className="text-gray-500">No results found for "{searchQuery}"</div>
+                    </div>
+                  )}
                 </div>
-              ) : posts && posts.length > 0 ? (
-                posts.map((post: any, idx: number) => {
-                  return (
+              </div>
+            )}
+            {/* Default Section (when not searching) */}
+            {!searchQuery && (
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {isLoading ? (
+                  Array.from({ length: 4 }).map((_, idx) => (
+                    <CategoryCardSkeleton key={idx} />
+                  ))
+                ) : error ? (
+                  <div className="col-span-full text-center py-8">
+                    <div className="text-red-500">Error loading posts</div>
+                  </div>
+                ) : posts && posts.length > 0 ? (
+                  posts.map((post: any, idx: number) => (
                     <div key={post.id || idx}>
                       <CategoryCard 
                         onClick={() => handleCategoryClick(post.id || idx)} 
@@ -149,14 +181,14 @@ const DiscoverPage: React.FC = () => {
                         image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
                       />
                     </div>
-                  );
-                })
-              ) : (
-                <div className="col-span-full text-center py-8">
-                  <div className="text-gray-500">No posts found</div>
-                </div>
-              )}
-            </div>
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-8">
+                    <div className="text-gray-500">No posts found</div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
       </div>
       </>
