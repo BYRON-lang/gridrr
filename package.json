@@ -13,6 +13,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "axios": "^1.10.0",
+    "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-helmet-async": "^2.0.5",
@@ -26,7 +27,7 @@
     "start": "react-scripts start",
     "build": "SKIP_PREFLIGHT_CHECK=true DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "test": "react-scripts test",
-     "dev": "react-scripts start",
+    "dev": "react-scripts start",
     "eject": "react-scripts eject",
     "install:force": "npm install --force"
   },

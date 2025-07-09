@@ -4,12 +4,14 @@ import { useEffect } from 'react';
 import { authService, SignupData, LoginData } from '../services/authService';
 import { useToast } from '../contexts/ToastContext';
 import { useRef } from 'react';
+import jwt_decode from 'jwt-decode';
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const toast = useToast();
   const sessionExpiredRef = useRef(false);
+  const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const signupMutation = useMutation({
     mutationFn: authService.signup,
@@ -102,6 +104,42 @@ export const useAuth = () => {
       sessionExpiredRef.current = false;
     }
   }, [userError, navigate, queryClient, toast]);
+
+  // Proactive token refresh logic
+  useEffect(() => {
+    function scheduleRefresh() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return;
+      let decoded: any;
+      try {
+        decoded = (jwt_decode as any)(token);
+      } catch {
+        return;
+      }
+      if (!decoded.exp) return;
+      const exp = decoded.exp * 1000; // ms
+      const now = Date.now();
+      const refreshTime = exp - now - 2 * 60 * 1000; // 2 minutes before expiry
+      if (refreshTime <= 0) return;
+      if (refreshTimeoutRef.current) clearTimeout(refreshTimeoutRef.current);
+      refreshTimeoutRef.current = setTimeout(async () => {
+        try {
+          await authService.refreshToken();
+          scheduleRefresh(); // reschedule for new token
+        } catch (err) {
+          // If refresh fails, let the normal error handling/log out flow run
+        }
+      }, refreshTime);
+    }
+    if (isAuthenticated) {
+      scheduleRefresh();
+    } else if (refreshTimeoutRef.current) {
+      clearTimeout(refreshTimeoutRef.current);
+    }
+    return () => {
+      if (refreshTimeoutRef.current) clearTimeout(refreshTimeoutRef.current);
+    };
+  }, [isAuthenticated, localStorage.getItem('accessToken')]);
 
   const signup = (data: SignupData) => {
     return signupMutation.mutate(data);
