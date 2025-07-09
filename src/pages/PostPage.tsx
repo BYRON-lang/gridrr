@@ -6,7 +6,8 @@ import { FiHeart } from 'react-icons/fi';
 import { FaTwitter, FaInstagram, FaLinkedin, FaFacebook } from 'react-icons/fa';
 import SocialButton from '../components/SocialButton';
 import ProBadge from '../components/ProBadge';
-import { getPost, likePost, followUser } from '../services/api';
+import { getPost, likePost, followUserProfile } from '../services/api';
+import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 
 const HeartIcon = FiHeart as React.ComponentType<{ size?: number; className?: string }>;
@@ -55,14 +56,14 @@ const PostPage: React.FC = () => {
 
   // Follow user mutation
   const followMutation = useMutation({
-    mutationFn: () => followUser(post?.data?.user?.id?.toString() || ''),
+    mutationFn: () => followUserProfile(post?.data?.user?.id?.toString() || ''),
     onSuccess: (data) => {
       console.log('Follow mutation successful:', data);
       // Invalidate and refetch the post data to get updated follow state
       queryClient.invalidateQueries({ queryKey: ['post', id] });
     },
     onError: (error) => {
-      if (error.response) {
+      if (axios.isAxiosError(error) && error.response) {
         console.error('Follow mutation failed:', error.response.data, error.response.status);
         if (error.response.data && typeof error.response.data === 'string') {
           alert('Follow failed: ' + error.response.data);
