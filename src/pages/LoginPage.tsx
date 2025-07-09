@@ -18,17 +18,29 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { login, isLoggingIn, loginError } = useAuth();
   const toast = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    login({
-      email,
-      password,
-    });
+    setLoading(true);
+    try {
+      await login({ email, password });
+    } catch (err: any) {
+      setLoading(false);
+      // Assuming setError is not defined in this file, so we'll just log the error
+      // If setError was intended to be used, it would need to be declared or passed as a prop.
+      // For now, we'll just show a toast based on the error message.
+      if (err?.message?.toLowerCase().includes('password')) {
+        toast.showToast('Wrong Password');
+      } else {
+        toast.showToast(err?.message || 'Login failed.');
+      }
+      return;
+    }
+    setLoading(false);
   };
 
   const getErrorMessage = () => {
@@ -48,7 +60,7 @@ const LoginPage: React.FC = () => {
         or <Link to="/signup" className="text-teal-500 underline cursor-pointer font-extralight hover:text-teal-600">sign up</Link> if you not a member yet.
       </div>
       <div className="bg-white border border-gray-300 p-10 min-w-[380px] max-w-[480px] w-full mt-6 mx-auto flex flex-col items-center relative">
-        {isLoggingIn && <LoadingSpinner overlay />}
+        {loading && <LoadingSpinner overlay />}
         <form className="w-full flex flex-col gap-3" autoComplete="off" onSubmit={handleSubmit}>
           {loginError && (
             <div className="text-red-500 mb-4 text-center">
@@ -65,7 +77,7 @@ const LoginPage: React.FC = () => {
             autoComplete="username"
             placeholder="Enter your email"
             required
-            disabled={isLoggingIn}
+            disabled={loading}
           />
           <label htmlFor="password" className="text-base text-gray-800 mb-1 font-normal">Password</label>
           <div className="relative flex items-center">
@@ -78,14 +90,14 @@ const LoginPage: React.FC = () => {
               autoComplete="current-password"
               placeholder="Enter your password"
               required
-              disabled={isLoggingIn}
+              disabled={loading}
             />
             <EyeIcon visible={showPassword} onClick={() => setShowPassword(v => !v)} />
           </div>
           <button 
             type="submit" 
             className="w-full py-3 bg-gray-800 text-white border-none rounded-full text-lg font-medium cursor-pointer mt-2 transition-colors hover:bg-gray-700 flex items-center justify-center min-h-[48px] disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
-            disabled={isLoggingIn}
+            disabled={loading}
           >
             Sign In
           </button>
