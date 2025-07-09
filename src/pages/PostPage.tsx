@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import DiscoverHeader from '../components/DiscoverHeader';
@@ -32,6 +32,7 @@ const sampleComments = [
 const PostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
+  const [isFollowing, setIsFollowing] = useState(false);
 
   // Fetch post data
   const { data: post, isLoading, error } = useQuery({
@@ -59,6 +60,7 @@ const PostPage: React.FC = () => {
     mutationFn: () => followUserProfile(post?.data?.user?.id?.toString() || ''),
     onSuccess: (data) => {
       console.log('Follow mutation successful:', data);
+      setIsFollowing(true); // Optimistic update
       // Invalidate and refetch the post data to get updated follow state
       queryClient.invalidateQueries({ queryKey: ['post', id] });
     },
@@ -78,6 +80,13 @@ const PostPage: React.FC = () => {
       }
     }
   });
+
+  // Sync local isFollowing state with backend after refetch
+  useEffect(() => {
+    if (post?.data?.user?.is_following !== undefined) {
+      setIsFollowing(post.data.user.is_following);
+    }
+  }, [post?.data?.user?.is_following]);
 
   const handleLike = () => {
     console.log('Like button clicked!');
@@ -152,12 +161,12 @@ const PostPage: React.FC = () => {
               onClick={handleFollow}
               disabled={followMutation.isPending}
               className={`px-6 py-2 rounded-full font-semibold shadow transition-colors ${
-                postData.user?.is_following 
+                isFollowing 
                   ? 'bg-gray-600 text-white hover:bg-gray-700' 
                   : 'bg-black text-white hover:bg-gray-800'
               }`}
             >
-              {postData.user?.is_following ? 'Following' : 'Follow'}
+              {isFollowing ? 'Following' : 'Follow'}
             </button>
           </div>
         </div>

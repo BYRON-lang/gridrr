@@ -22,6 +22,12 @@ const homeFilters = [
   'Portfolio',
 ];
 
+// Utility to detect mobile devices
+const isMobile = () => {
+  if (typeof window === 'undefined') return false;
+  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent);
+};
+
 const HomePage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   // Fetch posts for the grid
@@ -29,6 +35,16 @@ const HomePage: React.FC = () => {
     queryKey: ['home-posts'],
     queryFn: () => getPosts().then(res => res.data),
   });
+
+  if (isMobile()) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-white">
+        <div className="text-2xl font-bold text-gray-700 text-center p-8">
+          Mobile version will be available soon
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     // Show HomePage for unauthenticated users

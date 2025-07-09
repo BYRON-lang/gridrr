@@ -97,7 +97,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ onClick, title, time, image
           padding: '0 4px',
         }}
       >
-        <span style={{ fontFamily: 'Inter, sans-serif', color: '#18181b', fontWeight: 500, fontSize: 16, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '70%' }} title={title}>{title}</span>
+        <span style={{ fontFamily: 'Archivo, sans-serif', color: '#18181b', fontWeight: 700, fontSize: 16, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '70%' }} title={title}>{title}</span>
         {time && <span style={{ fontFamily: 'Inter, sans-serif', color: '#6b7280', fontWeight: 400, fontSize: 13 }}>{time}</span>}
       </div>
     </div>
