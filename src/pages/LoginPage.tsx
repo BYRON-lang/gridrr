@@ -18,7 +18,6 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const { login, isLoggingIn, loginError } = useAuth();
   const toast = useToast();
@@ -70,7 +69,7 @@ const LoginPage: React.FC = () => {
         or <Link to="/signup" className="text-teal-500 underline cursor-pointer font-extralight hover:text-teal-600">sign up</Link> if you not a member yet.
       </div>
       <div className="bg-white border border-gray-300 p-10 min-w-[380px] max-w-[480px] w-full mt-6 mx-auto flex flex-col items-center relative">
-        {loading && <LoadingSpinner overlay />}
+        {isLoggingIn && <LoadingSpinner overlay />}
         <form className="w-full flex flex-col gap-3" autoComplete="off" onSubmit={handleSubmit}>
           {loginError && (
             <div className="text-red-500 mb-4 text-center">
@@ -87,7 +86,7 @@ const LoginPage: React.FC = () => {
             autoComplete="username"
             placeholder="Enter your email"
             required
-            disabled={loading}
+            disabled={isLoggingIn}
           />
           <label htmlFor="password" className="text-base text-gray-800 mb-1 font-normal">Password</label>
           <div className="relative flex items-center">
@@ -100,14 +99,14 @@ const LoginPage: React.FC = () => {
               autoComplete="current-password"
               placeholder="Enter your password"
               required
-              disabled={loading}
+              disabled={isLoggingIn}
             />
             <EyeIcon visible={showPassword} onClick={() => setShowPassword(v => !v)} />
           </div>
           <button 
             type="submit" 
             className="w-full py-3 bg-gray-800 text-white border-none rounded-full text-lg font-medium cursor-pointer mt-2 transition-colors hover:bg-gray-700 flex items-center justify-center min-h-[48px] disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
-            disabled={loading}
+            disabled={isLoggingIn}
           >
             Sign In
           </button>
