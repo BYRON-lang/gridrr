@@ -172,9 +172,13 @@ const HomePage: React.FC = () => {
       </Helmet>
       <div className="min-h-screen bg-white">
         <div className="pl-0">
-          <Header />
+          <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+            <Header />
+          </div>
         </div>
         <HeroSection />
+        {/* Add padding to prevent content from being hidden behind the fixed header */}
+        <div style={{ height: '64px' }} />
         <div className="w-full flex gap-4 overflow-x-auto py-4 px-8 mb-2" style={{scrollbarWidth: 'none'}}>
           {tagCategories.map((cat) => (
             <FilterButton
