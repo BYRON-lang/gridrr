@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LoadingSpinner from '../components/loaders/LoadingSpinner';
+import { useToast } from '../contexts/ToastContext';
 
 const EyeIcon = ({ visible, onClick }: { visible: boolean; onClick: () => void }) => (
   <span className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600 flex items-center z-10" onClick={onClick} tabIndex={0} role="button" aria-label="Toggle password visibility">
@@ -19,6 +20,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const { login, isLoggingIn, loginError } = useAuth();
+  const toast = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

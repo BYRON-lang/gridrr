@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { Helmet } from 'react-helmet-async';
+import { useToast } from '../contexts/ToastContext';
 
 const SettingsPage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('settings');
@@ -20,6 +21,7 @@ const SettingsPage: React.FC = () => {
   const [profileError, setProfileError] = useState('');
   const [profileSuccess, setProfileSuccess] = useState('');
   const [profile, setProfile] = useState<any>({});
+  const toast = useToast();
 
   React.useEffect(() => {
     if (user) {
@@ -34,8 +36,12 @@ const SettingsPage: React.FC = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       setSuccess(true);
+      toast.showToast('Profile Saved');
       setTimeout(() => setSuccess(false), 2000);
     },
+    onError: (err: any) => {
+      toast.showToast(err?.message || 'Failed to save profile.');
+    }
   });
 
   const handleSave = (e: React.FormEvent) => {

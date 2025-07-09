@@ -3,6 +3,8 @@ import DiscoverHeader from '../components/DiscoverHeader';
 import { FiImage } from 'react-icons/fi';
 import { authService } from '../services/authService';
 import { createPost } from '../services/api';
+import { useToast } from '../contexts/ToastContext';
+import { useNavigate } from 'react-router-dom';
 
 const ImageIcon = FiImage as React.ComponentType<{ size?: number; className?: string }>;
 
@@ -23,6 +25,8 @@ const CreatePostPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     authService.getProfile().then(res => setProfile(res.data)).catch(() => setProfile(null));
@@ -58,10 +62,10 @@ const CreatePostPage: React.FC = () => {
     setError(''); setSuccess(''); setLoading(true);
     try {
       if (!title.trim()) {
-        setError('Title is required.'); setLoading(false); return;
+        setError('Title is required.'); setLoading(false); toast.showToast('Title is required.'); return;
       }
       if (images.length === 0) {
-        setError('At least one image is required.'); setLoading(false); return;
+        setError('At least one image is required.'); setLoading(false); toast.showToast('At least one image is required.'); return;
       }
       const formData = new FormData();
       formData.append('title', title.trim());
@@ -69,9 +73,15 @@ const CreatePostPage: React.FC = () => {
       images.forEach((img) => formData.append('images', img));
       const data = await createPost(formData);
       setSuccess('Post created!');
+      toast.showToast('Post Created Successfully');
       setTitle(''); setSelectedTags([]); setImages([]);
+      setTimeout(() => {
+        navigate('/discover', { replace: true });
+        window.location.reload();
+      }, 1200);
     } catch (err: any) {
       setError(err?.message || 'Failed to create post.');
+      toast.showToast(err?.message || 'Failed to create post.');
     } finally {
       setLoading(false);
     }
