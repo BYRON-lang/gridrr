@@ -70,8 +70,12 @@ const DiscoverHeader: React.FC = () => {
   };
 
   const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen(false); // Close search modal when opening user modal
+    setIsModalOpenUser(!isModalOpenUser);
   };
+
+  // Add state for user modal
+  const [isModalOpenUser, setIsModalOpenUser] = useState(false);
 
   const handleSignOut = () => {
     logout();
@@ -81,6 +85,21 @@ const DiscoverHeader: React.FC = () => {
     { id: 'discover', label: 'Discover' },
     { id: 'trending', label: 'Trending' }
   ];
+
+  // Close user modal on outside click
+  React.useEffect(() => {
+    function handleClickOutsideUser(event: MouseEvent) {
+      if (roundedCardRef.current && !roundedCardRef.current.contains(event.target as Node)) {
+        setIsModalOpenUser(false);
+      }
+    }
+    if (isModalOpenUser) {
+      document.addEventListener('mousedown', handleClickOutsideUser);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutsideUser);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutsideUser);
+  }, [isModalOpenUser]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
@@ -114,7 +133,7 @@ const DiscoverHeader: React.FC = () => {
               onChange={e => setSearchQuery(e.target.value)}
             />
             {/* Modal/Dropdown for live search results */}
-            {isModalOpen && (
+            {isModalOpen && !isModalOpenUser && (
               <div ref={modalRef} className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[500px] bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
                 {isSearching ? (
                   <div className="p-4 text-center text-gray-500">Searching...</div>
@@ -174,11 +193,10 @@ const DiscoverHeader: React.FC = () => {
           </div>
         </div>
       </div>
-      
       {/* User Modal */}
       <UserModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpenUser}
+        onClose={() => setIsModalOpenUser(false)}
         user={user}
         onSignOut={handleSignOut}
         anchorRef={roundedCardRef}
