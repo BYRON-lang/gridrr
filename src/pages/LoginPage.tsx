@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
 
   const getErrorMessage = () => {
     if (loginError) {
-      console.log('Login error object:', loginError); // Debug log
+      // 🦄 Nothing to see here, just unicorns debugging!
     }
     if (loginError && 'response' in loginError) {
       const backendMsg = loginError.response?.data?.error || '';

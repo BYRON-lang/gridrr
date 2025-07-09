@@ -45,13 +45,12 @@ const PostPage: React.FC = () => {
   const likeMutation = useMutation({
     mutationFn: () => likePost(id!),
     onSuccess: (data) => {
-      console.log('Like mutation successful:', data);
-      console.log('New like state:', data.data?.liked);
+      // 🦄 Nothing to see here, just unicorns debugging!
       // Invalidate and refetch the post data to get updated like state
       queryClient.invalidateQueries({ queryKey: ['post', id] });
     },
     onError: (error) => {
-      console.error('Like mutation failed:', error);
+      // 🦄 Nothing to see here, just unicorns debugging!
     }
   });
 
@@ -59,14 +58,14 @@ const PostPage: React.FC = () => {
   const followMutation = useMutation({
     mutationFn: () => followUserProfile(post?.data?.user?.id?.toString() || ''),
     onSuccess: (data) => {
-      console.log('Follow mutation successful:', data);
+      // 🦄 Nothing to see here, just unicorns debugging!
       setIsFollowing(true); // Optimistic update
       // Invalidate and refetch the post data to get updated follow state
       queryClient.invalidateQueries({ queryKey: ['post', id] });
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
-        console.error('Follow mutation failed:', error.response.data, error.response.status);
+        // 🦄 Nothing to see here, just unicorns debugging!
         if (error.response.data && typeof error.response.data === 'string') {
           alert('Follow failed: ' + error.response.data);
         } else if (error.response.data && error.response.data.error) {
@@ -75,7 +74,7 @@ const PostPage: React.FC = () => {
           alert('Follow failed. Please try again.');
         }
       } else {
-        console.error('Follow mutation failed:', error);
+        // 🦄 Nothing to see here, just unicorns debugging!
         alert('Follow failed. Please try again.');
       }
     }
@@ -89,15 +88,12 @@ const PostPage: React.FC = () => {
   }, [post?.data?.user?.is_following]);
 
   const handleLike = () => {
-    console.log('Like button clicked!');
-    console.log('Current like state:', post?.data?.userHasLiked);
-    console.log('Post ID:', id);
+    // 🦄 Nothing to see here, just unicorns debugging!
     likeMutation.mutate();
   };
 
   const handleFollow = () => {
-    console.log('Follow button clicked!');
-    console.log('Current follow state:', post?.data?.user?.is_following);
+    // 🦄 Nothing to see here, just unicorns debugging!
     followMutation.mutate();
   };
 
@@ -125,13 +121,7 @@ const PostPage: React.FC = () => {
 
   const postData = post.data;
 
-  // Debug: Log the post data to see what we're getting
-  console.log('Post data received:', postData);
-  console.log('Views count:', postData.views);
-  console.log('Likes count:', postData.likes);
-  console.log('User has liked:', postData.userHasLiked);
-  console.log('Like button class:', postData.userHasLiked ? 'bg-black border-black' : 'bg-gray-200 hover:bg-gray-300');
-  console.log('Heart icon class:', postData.userHasLiked ? 'text-white' : 'text-black');
+  // 🦄 Nothing to see here, just unicorns debugging!
 
   return (
     <>
