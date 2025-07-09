@@ -11,6 +11,8 @@ interface SearchBarProps {
   width?: string;
   position?: 'static' | 'absolute' | 'relative';
   centerPosition?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ 
@@ -23,13 +25,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   iconClassName = '',
   width = 'w-[600px]',
   position = 'static',
-  centerPosition = false
+  centerPosition = false,
+  value,
+  onChange
 }) => {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(query);
+    onSearch(value !== undefined ? value : query);
   };
 
   const baseContainerClasses = centerPosition 
@@ -43,10 +47,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <form onSubmit={handleSubmit} className={`relative ${className}`}>
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={value !== undefined ? value : query}
+        onChange={onChange ? onChange : (e) => setQuery(e.target.value)}
         placeholder={placeholder}
-          className={`${width} px-4 py-4 pl-16 pr-4 text-sm text-gray-900 bg-gray-100 rounded-full focus:ring-2 focus:ring-teal-500 outline-none ${inputClassName}`}
+        className={`${width} px-4 py-4 pl-16 pr-4 text-sm text-gray-900 bg-gray-100 rounded-full focus:ring-2 focus:ring-teal-500 outline-none ${inputClassName}`}
       />
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <div className="bg-green-100 rounded-full p-2">
