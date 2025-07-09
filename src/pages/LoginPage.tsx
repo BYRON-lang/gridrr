@@ -22,13 +22,9 @@ const LoginPage: React.FC = () => {
   const { loginAsync, isLoggingIn, loginError } = useAuth();
   const toast = useToast();
 
-  // Show toast on login error
+  // Remove toast for login error, only show error above form
   React.useEffect(() => {
-    if (loginError) {
-      console.log('Login error:', loginError); // Debug log
-      const msg = getErrorMessage();
-      if (msg) toast.showToast(msg);
-    }
+    // No toast for login errors on login page
   }, [loginError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
