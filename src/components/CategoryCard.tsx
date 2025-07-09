@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface CategoryCardProps {
   onClick?: () => void;
@@ -7,7 +7,26 @@ interface CategoryCardProps {
   image?: string;
 }
 
+const COLORS = [
+  '#fbbf24', // amber
+  '#60a5fa', // blue
+  '#34d399', // green
+  '#f472b6', // pink
+  '#f87171', // red
+  '#a78bfa', // purple
+  '#facc15', // yellow
+  '#38bdf8', // sky
+  '#fdba74', // orange
+  '#6ee7b7', // teal
+  '#818cf8', // indigo
+  '#fcd34d', // gold
+];
+const getRandomColor = () => COLORS[Math.floor(Math.random() * COLORS.length)];
+
 const CategoryCard: React.FC<CategoryCardProps> = ({ onClick, title, time, image }) => {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [bgColor] = useState(getRandomColor());
+
   return (
     <div
       style={{
@@ -39,7 +58,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ onClick, title, time, image
           overflow: 'hidden',
           borderRadius: 0,
           marginBottom: '12px',
-          background: '#f3f4f6',
+          background: bgColor,
+          transition: 'background 0.3s',
         }}
       >
         <img
@@ -55,9 +75,13 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ onClick, title, time, image
             position: 'absolute',
             top: 0,
             left: 0,
+            opacity: imgLoaded ? 1 : 0,
+            transition: 'opacity 0.5s',
           }}
+          onLoad={() => setImgLoaded(true)}
           onError={e => {
             e.currentTarget.src = '/assets/logo-space-blue.png';
+            setImgLoaded(true);
           }}
         />
       </div>
