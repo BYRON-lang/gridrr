@@ -25,6 +25,7 @@ const LoginPage: React.FC = () => {
   // Show toast on login error
   React.useEffect(() => {
     if (loginError) {
+      console.log('Login error:', loginError); // Debug log
       const msg = getErrorMessage();
       if (msg) toast.showToast(msg);
     }
@@ -42,14 +43,15 @@ const LoginPage: React.FC = () => {
   const getErrorMessage = () => {
     if (loginError && 'response' in loginError) {
       const backendMsg = loginError.response?.data?.error || '';
-      if (backendMsg === 'Email and password are required') {
+      const status = loginError.response?.status;
+      if (status === 400 && backendMsg === 'Email and password are required') {
         return 'Please enter both email and password.';
       }
-      if (backendMsg === 'Invalid email or password') {
-        return 'Incorrect email or password.';
-      }
-      if (backendMsg === 'User not found') {
+      if (status === 404 && backendMsg === 'User not found') {
         return 'No account found with that email.';
+      }
+      if (status === 401 && backendMsg === 'Invalid email or password') {
+        return 'Incorrect email or password.';
       }
       return 'An error occurred. Please try again.';
     }
