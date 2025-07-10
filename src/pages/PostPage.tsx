@@ -9,6 +9,8 @@ import ProBadge from '../components/ProBadge';
 import { getPost, likePost, followUserProfile } from '../services/api';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const HeartIcon = FiHeart as React.ComponentType<{ size?: number; className?: string }>;
 
@@ -33,6 +35,15 @@ const PostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
   const [isFollowing, setIsFollowing] = useState(false);
+  const { user, isLoadingUser, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // If user is authenticated but has no profile, redirect to settings
+    if (isAuthenticated && user && (!user.profile || !user.profile.display_name)) {
+      navigate('/settings', { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
   // Fetch post data
   const { data: post, isLoading, error } = useQuery({
@@ -178,7 +189,7 @@ const PostPage: React.FC = () => {
                 </div>
                 {/* Post owner name */}
                 <div className="text-base text-gray-900 font-medium mt-8">
-                  {postData.user?.first_name} {postData.user?.last_name}
+                  {postData.user?.profile?.display_name || 'Unknown User'}
                 </div>
                 {/* Post owner expertise */}
                 <div className="text-xs text-gray-500">

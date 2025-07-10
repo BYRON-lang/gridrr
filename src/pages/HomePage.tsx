@@ -42,8 +42,8 @@ const HomePage: React.FC = () => {
         <div className="text-2xl font-bold text-gray-700 text-center p-8">
           Mobile version will be available soon
         </div>
-      </div>
-    );
+    </div>
+  );
   }
 
   if (!isAuthenticated) {
