@@ -257,16 +257,20 @@ const PostPage: React.FC = () => {
               <div className="flex flex-col items-start gap-1">
                 <span className="text-xs text-gray-500 font-semibold mb-1">Tags:</span>
                 {postData.tags && postData.tags.length > 0 ? (
-                  postData.tags.map((tag: string) => (
-                    <span
-                      key={tag}
-                      className="text-sm text-gray-700"
-                    >
-                      {tag}
-                    </span>
-                  ))
+                  <div className="flex flex-wrap gap-2">
+                    {postData.tags.slice(0, 2).map((tag: string, idx: number) => (
+                      <span key={idx} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                        {tag}
+                      </span>
+                    ))}
+                    {postData.tags.length > 2 && (
+                      <span className="bg-gray-300 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                        +{postData.tags.length - 2}
+                      </span>
+                    )}
+                  </div>
                 ) : (
-                  <span className="text-sm text-gray-500">No tags</span>
+                  <span className="text-xs text-gray-400">No tags</span>
                 )}
               </div>
             </div>
