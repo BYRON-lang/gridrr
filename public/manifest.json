@@ -1,26 +1,71 @@
 {
   "short_name": "Gridrr",
-  "name": "Gridrr - Where Great Design Meets Great Minds",
-  "description": "Gridrr connects designers and innovators to share, discover, and collaborate on world-class creative work.",
+  "name": "Gridrr - Premier Creative Portfolio & Design Community Platform for Professional Designers and Innovators",
+  "description": "Gridrr is the world's leading creative portfolio and design community platform where exceptional design meets extraordinary minds. Our comprehensive ecosystem empowers designers, creatives, and innovators across all disciplines to showcase their masterwork, discover groundbreaking projects, and forge meaningful connections within the global creative community. Whether you're a seasoned graphic designer crafting brand identities, a UI/UX professional shaping digital experiences, an illustrator bringing stories to life, a photographer capturing moments, an architect designing spaces, a product designer innovating solutions, or any creative professional pushing boundaries, Gridrr provides the sophisticated tools, engaged audience, and premium exposure you need to elevate your career and establish your reputation in the industry. Our platform features curated galleries, advanced portfolio customization, real-time collaboration tools, client discovery systems, creative challenges, skill-based networking, mentorship programs, and career opportunities that connect talent with the world's most innovative companies and forward-thinking clients. Join millions of creatives who trust Gridrr to showcase their vision, amplify their voice, and transform their passion into a thriving professional journey in the ever-evolving landscape of design and creativity.",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "assets/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "assets/logo.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo512.png",
+      "src": "assets/logo.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "theme_color": "#2563eb",
-  "background_color": "#f8fafc"
+  "background_color": "#f8fafc",
+  "scope": "/",
+  "id": "gridrr-pwa",
+  "categories": ["design", "creativity", "collaboration", "social"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "shortcuts": [
+    {
+      "name": "Explore",
+      "short_name": "Explore",
+      "description": "Discover trending designs and creative work",
+      "url": "/explore"
+    },
+    {
+      "name": "Upload",
+      "short_name": "Upload",
+      "description": "Share your creative work with the community",
+      "url": "/upload"
+    },
+    {
+      "name": "Profile",
+      "short_name": "Profile",
+      "description": "View and edit your profile",
+      "url": "/profile"
+    }
+  ],
+  "screenshots": [
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://gridrr.com/manifest.json"
+    }
+  ],
+  "prefer_related_applications": false
 }
