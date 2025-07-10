@@ -38,13 +38,6 @@ const PostPage: React.FC = () => {
   const { user, isLoadingUser, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // If user is authenticated but has no profile or no display_name, redirect to settings
-    if (isAuthenticated && (!user?.profile || !user.profile.display_name)) {
-      navigate('/settings', { replace: true });
-    }
-  }, [isAuthenticated, user, navigate]);
-
   // Fetch post data
   const { data: post, isLoading, error } = useQuery({
     queryKey: ['post', id],
