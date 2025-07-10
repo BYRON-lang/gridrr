@@ -39,8 +39,8 @@ const PostPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If user is authenticated but has no profile, redirect to settings
-    if (isAuthenticated && user && (!user.profile || !user.profile.display_name)) {
+    // If user is authenticated but has no profile or no display_name, redirect to settings
+    if (isAuthenticated && (!user?.profile || !user.profile.display_name)) {
       navigate('/settings', { replace: true });
     }
   }, [isAuthenticated, user, navigate]);
