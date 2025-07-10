@@ -14,6 +14,16 @@ import CreatePostPage from './pages/CreatePostPage';
 import PostPage from './pages/PostPage';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ToastProvider } from './contexts/ToastContext';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import CookiesPage from './pages/CookiesPage';
+import AboutPage from './pages/AboutPage';
+import CookiesPopup from './components/CookiesPopup';
+import AdsPage from './pages/AdsPage';
+import ResourcesPage from './pages/ResourcesPage';
+import BlogPage from './pages/BlogPage';
+import CareersPage from './pages/CareersPage';
+import SupportPage from './pages/SupportPage';
 
 function App() {
   return (
@@ -34,6 +44,7 @@ function App() {
         </Helmet>
     <QueryProvider>
       <Router>
+        <CookiesPopup />
         <div className="App">
           <Routes>
             <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>} />
@@ -87,6 +98,15 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/ads" element={<AdsPage />} />
+            <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/support" element={<SupportPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/cookies" element={<CookiesPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

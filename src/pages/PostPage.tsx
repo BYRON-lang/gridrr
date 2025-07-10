@@ -14,22 +14,6 @@ import { useNavigate } from 'react-router-dom';
 
 const HeartIcon = FiHeart as React.ComponentType<{ size?: number; className?: string }>;
 
-const sampleComments = [
-  {
-    id: 1,
-    name: 'Alice Smith',
-    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-    time: '2 hours ago',
-    text: 'Amazing dashboard design! Really love the color palette.'
-  },
-  {
-    id: 2,
-    name: 'Bob Johnson',
-    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-    time: '1 hour ago',
-    text: 'Great work! Would love to see more details about the UX decisions.'
-  }
-];
 
 const PostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

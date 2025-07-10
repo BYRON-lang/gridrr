@@ -8,14 +8,7 @@ interface PostGridProps {
 const PostGrid: React.FC<PostGridProps> = ({ children, className = '' }) => {
   return (
     <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '24px',
-        padding: '20px 0', // No left and right padding
-        width: '100%',
-      }}
-      className={className}
+      className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 w-full ${className}`}
     >
       {children}
     </div>

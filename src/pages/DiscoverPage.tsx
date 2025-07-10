@@ -78,11 +78,13 @@ const DiscoverPage: React.FC = () => {
           <DiscoverHeader />
           <div className="mx-10 pt-24">
             {/* Search Bar */}
-            <DiscoverFilter 
-              selectedTags={selectedTags}
-              onTagSelect={handleTagSelect}
-              onTagRemove={handleTagRemove}
-            />
+            <div className="hidden md:block">
+              <DiscoverFilter 
+                selectedTags={selectedTags}
+                onTagSelect={handleTagSelect}
+                onTagRemove={handleTagRemove}
+              />
+            </div>
             {/* SortFilter and selected tags pills in one row, pills after last sort filter */}
             <div className="flex items-center gap-2 mb-4 w-full">
               {/* Inline sort filter buttons */}

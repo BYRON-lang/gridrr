@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
   // State for current image index
   const [current, setCurrent] = useState(0);
 
-  // Swap image every 2 seconds
+  // Swap image every 4 seconds
   useEffect(() => {
     if (!images.length) return;
     const interval = setInterval(() => {
@@ -47,77 +47,40 @@ const HeroSection: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="w-full">
       <section
-        style={{
-          width: '100%',
-          minHeight: '54vh',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '64px 16px 48px 16px',
-          boxSizing: 'border-box',
-        }}
+        className="w-full min-h-[54vh] flex flex-col md:flex-row items-center justify-center px-4 md:px-8 py-8 md:py-12 box-border"
       >
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', minWidth: 0 }}>
+        <div className="flex-1 flex flex-col items-center md:items-start justify-center min-w-0">
           <h1
-            style={{
-              fontFamily: 'Poppins, sans-serif',
-              fontWeight: 600,
-              fontSize: 'clamp(2.8rem, 7vw, 5rem)',
-              color: '#18181b',
-              textAlign: 'left',
-              margin: 0,
-              letterSpacing: '-2px',
-              lineHeight: 1.08,
-              maxWidth: 700,
-              marginBottom: '2rem',
-            }}
+            className="font-poppins font-semibold text-[2.2rem] sm:text-4xl md:text-5xl lg:text-6xl text-zinc-900 text-center md:text-left mb-8 leading-tight max-w-2xl tracking-tight"
+            style={{ letterSpacing: '-2px' }}
           >
             Your Gateway to World-Class Design Inspiration
           </h1>
         </div>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 320 }}>
+        {/* Images: show below heading on mobile, right on md+ */}
+        <div className="w-full flex md:hidden items-center justify-center mt-6">
           {!isLoading && images.length > 0 && (
             <img
               key={images[current]}
               src={images[current]}
               alt="Post inspiration"
-              style={{
-                maxWidth: '620px',
-                maxHeight: '520px',
-                width: '100%',
-                height: 'auto',
-                borderRadius: '1.5rem',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                objectFit: 'cover',
-                transition: 'opacity 0.5s',
-                opacity: 1,
-              }}
+              className="max-w-[90vw] max-h-[320px] w-full h-auto rounded-2xl shadow-lg object-cover transition-opacity duration-500 opacity-100"
+            />
+          )}
+        </div>
+        <div className="hidden md:flex flex-1 flex-col items-center justify-center min-h-[320px]">
+          {!isLoading && images.length > 0 && (
+            <img
+              key={images[current]}
+              src={images[current]}
+              alt="Post inspiration"
+              className="max-w-[620px] max-h-[520px] w-full h-auto rounded-3xl shadow-lg object-cover transition-opacity duration-500 opacity-100"
             />
           )}
         </div>
       </section>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-        <span
-          style={{
-            fontFamily: 'Poppins, sans-serif',
-            fontWeight: 600,
-            fontSize: '2.25rem',
-            color: '#6b7280',
-            textAlign: 'center',
-            maxWidth: 700,
-            minHeight: '2.5rem',
-            transition: 'opacity 0.4s',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
-            opacity: fade ? 1 : 0,
-          }}
-        >
-          {heroMessages[msgIndex]}
-        </span>
-      </div>
     </div>
   );
 };
