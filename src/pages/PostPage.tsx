@@ -136,10 +136,11 @@ const PostPage: React.FC = () => {
     <div className="min-h-screen w-full bg-white">
       <DiscoverHeader />
       <div className="pt-32">
-        <div className="w-full bg-white border-b border-gray-200 px-16 py-4 flex items-center justify-between">
-          <div className="flex-1 flex justify-center">
+        {/* Move the title to align with the images */}
+        <div className="w-full bg-white border-b border-gray-200 py-4 flex items-center justify-between" style={{ marginLeft: '614px' }}>
+          <div className="flex-1 flex">
             {/* Post title */}
-            <h1 className="text-4xl font-light text-center">{postData.title}</h1>
+            <h1 className="text-4xl font-light text-left">{postData.title}</h1>
           </div>
           <div className="flex items-center gap-4">
             <button 
