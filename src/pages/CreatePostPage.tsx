@@ -61,7 +61,7 @@ const CreatePostPage: React.FC = () => {
   const handleSubmit = async () => {
     setError(''); setSuccess(''); setLoading(true);
     try {
-      if (!profile) {
+      if (!profile || !profile.display_name) {
         setError('Please complete your profile in Settings before creating a post.');
         setLoading(false);
         toast.showToast('Please complete your profile in Settings before creating a post.');
@@ -103,11 +103,11 @@ const CreatePostPage: React.FC = () => {
         style={{ top: '104px' }}
         type="button"
         onClick={handleSubmit}
-        disabled={loading || !profile}
+        disabled={loading || !profile || !profile.display_name}
       >
         {loading ? 'Submitting...' : 'Submit'}
       </button>
-      {!profile && (
+      {(!profile || !profile.display_name) && (
         <div className="fixed right-12 z-20 mt-20 px-6 py-2 bg-red-100 text-red-700 rounded shadow font-semibold" style={{ top: '144px' }}>
           Please complete your profile in Settings before creating a post.
         </div>
