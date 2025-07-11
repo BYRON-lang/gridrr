@@ -1,38 +1,49 @@
 import React from 'react';
 import DiscoverHeader from '../components/DiscoverHeader';
 import YourPostCard from '../components/YourPostCard';
-
-const samplePosts = [
-  {
-    title: 'My First Post',
-    description: 'This is a description of my first post. It is just a sample for layout purposes.',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=350&h=250&fit=crop',
-    time: '2 days ago',
-  },
-  {
-    title: 'Another Post',
-    description: 'Here is another post I have made. The description can be a bit longer to show how it wraps.',
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=350&h=250&fit=crop',
-    time: '1 week ago',
-  },
-  {
-    title: 'Third Post',
-    description: 'A third example post to show row layout.',
-    image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=350&h=250&fit=crop',
-    time: '3 hours ago',
-  },
-];
+import { useQuery } from '@tanstack/react-query';
+import { getMyPosts } from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 
 const PostsPage: React.FC = () => {
+  const { user, isAuthenticated, isLoadingUser } = useAuth();
+
+  const userId = user?.id || user?.user_id;
+
+  const {
+    data: posts,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['my-posts', userId],
+    queryFn: () => getMyPosts(userId).then(res => res.data),
+    enabled: !!userId && isAuthenticated,
+  });
+
   return (
     <div className="min-h-screen bg-white w-full">
       <DiscoverHeader />
       <div className="max-w-6xl mx-auto pt-28 pb-8 px-4">
         <h2 className="text-3xl font-light text-gray-900 align-center">Your Posts</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
-          {samplePosts.map((post, idx) => (
-            <YourPostCard key={idx} {...post} />
-          ))}
+          {isLoadingUser ? (
+            <div className="text-gray-700">Loading user...</div>
+          ) : isLoading ? (
+            <div className="text-gray-700">Loading posts...</div>
+          ) : error ? (
+            <div className="text-red-600">Error loading posts</div>
+          ) : posts && posts.length > 0 ? (
+            posts.map((post: any, idx: number) => (
+              <YourPostCard
+                key={post.id || idx}
+                title={post.title}
+                image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : ''}
+                time={post.created_at ? new Date(post.created_at).toLocaleDateString() : ''}
+              />
+            ))
+          ) : (
+            <div className="text-gray-700">No posts found</div>
+          )}
         </div>
       </div>
     </div>

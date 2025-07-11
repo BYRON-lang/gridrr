@@ -174,4 +174,8 @@ export const followUserProfile = async (userId: string) => {
   return api.post(`/profile/${userId}/follow`);
 };
 
+export const getMyPosts = async (userId: string) => {
+  return api.get(`/posts/user/${userId}`);
+};
+
 export default api; 
