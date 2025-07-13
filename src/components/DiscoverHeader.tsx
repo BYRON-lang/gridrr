@@ -93,9 +93,10 @@ const DiscoverHeader: React.FC = () => {
           {/* Logo and Tabs Section */}
           <div className="flex items-center gap-2 pl-1">
             <img 
-              src="/assets/logo-black.png" 
+              src="/assets/logo.svg" 
               alt="Gridrr" 
-              className="h-12 w-auto object-contain cursor-pointer"
+              className="h-11 w-auto object-contain cursor-pointer"
+              style={{ minWidth: 60 }}
               onClick={() => navigate('/discover')}
             />
             <Tabs 
@@ -103,7 +104,7 @@ const DiscoverHeader: React.FC = () => {
               defaultSelected="discover"
               activeTabClassName="text-black font-bold"
               inactiveTabClassName="text-gray-600 hover:text-gray-800"
-              className="-mt-5"
+              className=""
             />
           </div>
 

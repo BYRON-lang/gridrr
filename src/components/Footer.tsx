@@ -15,12 +15,12 @@ const Footer: React.FC = () => {
     <div>
       <footer className="bg-white w-full h-16 flex items-center" style={{ marginLeft: 350, marginRight: 350, marginTop: 100 }}>
         <img
-          src="/assets/logo-black.png"
+          src="/assets/logo.svg"
           alt="Gridrr Logo"
           className="h-11 w-auto object-contain"
-          style={{ minWidth: 40 }}
+          style={{ minWidth: 60 }}
         />
-        <nav className="flex gap-20 ml-8 mb-4">
+        <nav className="flex items-center gap-20 ml-8">
           {footerTabs.map(tab => (
             (tab.label === 'About' || tab.label === 'Ads' || tab.label === 'Resources' || tab.label === 'Careers') ? (
               <Link
