@@ -1,29 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import DiscoverPage from './pages/DiscoverPage';
-import SettingsPage from './pages/SettingsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { QueryProvider } from './contexts/QueryProvider';
-import PostsPage from './pages/PostsPage';
 import PublicRoute from './components/PublicRoute';
-import ProfilePage from './pages/ProfilePage';
-import CreatePostPage from './pages/CreatePostPage';
-import PostPage from './pages/PostPage';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ToastProvider } from './contexts/ToastContext';
-import TermsPage from './pages/TermsPage';
-import PrivacyPage from './pages/PrivacyPage';
-import CookiesPage from './pages/CookiesPage';
-import AboutPage from './pages/AboutPage';
 import CookiesPopup from './components/CookiesPopup';
-import AdsPage from './pages/AdsPage';
-import ResourcesPage from './pages/ResourcesPage';
-import BlogPage from './pages/BlogPage';
-import CareersPage from './pages/CareersPage';
-import SupportPage from './pages/SupportPage';
+
+// Lazy imports after all other imports
+const HomePage = lazy(() => import('./pages/HomePage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const SignupPage = lazy(() => import('./pages/SignupPage'));
+const DiscoverPage = lazy(() => import('./pages/DiscoverPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const PostsPage = lazy(() => import('./pages/PostsPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const CreatePostPage = lazy(() => import('./pages/CreatePostPage'));
+const PostPage = lazy(() => import('./pages/PostPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const CookiesPage = lazy(() => import('./pages/CookiesPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const AdsPage = lazy(() => import('./pages/AdsPage'));
+const ResourcesPage = lazy(() => import('./pages/ResourcesPage'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const CareersPage = lazy(() => import('./pages/CareersPage'));
+const SupportPage = lazy(() => import('./pages/SupportPage'));
 
 function App() {
   return (
@@ -46,6 +48,7 @@ function App() {
       <Router>
         <CookiesPopup />
         <div className="App">
+          <Suspense fallback={<div className="w-full min-h-screen flex items-center justify-center text-lg">Loading...</div>}>
           <Routes>
             <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>} />
             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
@@ -109,6 +112,7 @@ function App() {
             <Route path="/cookies" element={<CookiesPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </Suspense>
         </div>
       </Router>
     </QueryProvider>

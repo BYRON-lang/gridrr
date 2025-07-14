@@ -29,6 +29,9 @@ const PostCard: React.FC<PostCardProps> = ({
           src={imageUrl || '/assets/logo-space-blue.png'} 
           alt={title} 
           className="w-full h-48 object-cover"
+          loading="lazy"
+          srcSet={imageUrl ? `${imageUrl} 480w, ${imageUrl} 800w, ${imageUrl} 1200w` : undefined}
+          sizes="(max-width: 600px) 480px, (max-width: 900px) 800px, 1200px"
           onError={(e) => {
             e.currentTarget.src = '/assets/logo-space-blue.png';
           }}

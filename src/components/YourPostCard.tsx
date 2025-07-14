@@ -16,6 +16,9 @@ const YourPostCard: React.FC<YourPostCardProps> = ({ title, image, time }) => {
           src={image}
           alt={title}
           className="w-full h-56 object-cover rounded-lg"
+          loading="lazy"
+          srcSet={image ? `${image} 480w, ${image} 800w, ${image} 1200w` : undefined}
+          sizes="(max-width: 600px) 480px, (max-width: 900px) 800px, 1200px"
         />
       </div>
       <div className="mt-4 flex items-center gap-3">

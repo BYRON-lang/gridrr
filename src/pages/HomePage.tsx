@@ -147,6 +147,9 @@ const HomePage: React.FC = () => {
                     src={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : '/assets/logo-space-blue.png'}
                     alt={post.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    srcSet={post.image_urls && post.image_urls.length > 0 ? `${post.image_urls[0]} 480w, ${post.image_urls[0]} 800w, ${post.image_urls[0]} 1200w` : undefined}
+                    sizes="(max-width: 600px) 180px, 100vw"
                   />
                 </div>
               ))}

@@ -65,6 +65,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ onClick, title, time, image
         <img
           src={image || '/assets/logo-space-blue.png'}
           alt={title}
+          loading="lazy"
+          srcSet={image ? `${image} 480w, ${image} 800w, ${image} 1200w` : undefined}
+          sizes="(max-width: 600px) 480px, (max-width: 900px) 800px, 1200px"
           style={{
             width: '100%',
             height: '100%',

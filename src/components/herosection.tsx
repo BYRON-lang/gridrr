@@ -67,6 +67,9 @@ const HeroSection: React.FC = () => {
               src={images[current]}
               alt="Post inspiration"
               className="max-w-[90vw] max-h-[320px] w-full h-auto rounded-2xl shadow-lg object-cover transition-opacity duration-500 opacity-100"
+              loading="lazy"
+              srcSet={images[current] ? `${images[current]} 480w, ${images[current]} 800w, ${images[current]} 1200w` : undefined}
+              sizes="(max-width: 600px) 480px, (max-width: 900px) 800px, 1200px"
             />
           )}
         </div>
