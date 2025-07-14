@@ -15,9 +15,9 @@ const Footer: React.FC = () => {
     <div>
       <footer className="bg-white w-full h-16 flex items-center" style={{ marginLeft: 350, marginRight: 350, marginTop: 100 }}>
         <img
-          src="/assets/logo.svg"
+          src="/assets/logo.png"
           alt="Gridrr Logo"
-          className="h-11 w-auto object-contain"
+          className="h-10 w-auto object-contain"
           style={{ minWidth: 60 }}
         />
         <nav className="flex items-center gap-20 ml-8">

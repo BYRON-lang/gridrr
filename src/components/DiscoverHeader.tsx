@@ -93,7 +93,7 @@ const DiscoverHeader: React.FC = () => {
           {/* Logo and Tabs Section */}
           <div className="flex items-center gap-2 pl-1">
             <img 
-              src="/assets/logo.svg" 
+              src="/assets/logo1.png" 
               alt="Gridrr" 
               className="h-11 w-auto object-contain cursor-pointer"
               style={{ minWidth: 60 }}

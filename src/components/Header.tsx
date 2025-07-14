@@ -55,8 +55,8 @@ const Header: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center w-full md:w-auto pl-0 md:pl-10 gap-2 md:gap-0">
             <Link to="/" className="flex-shrink-0 mb-2 md:mb-0">
               <img
-                className="h-8 w-auto"
-                src="/assets/logo1.png"
+                className="h-10 w-auto"
+                src="/assets/logo.png"
                 alt="Logo"
               />
             </Link>
