@@ -22,6 +22,7 @@ const SettingsPage: React.FC = () => {
   const [profileSuccess, setProfileSuccess] = useState('');
   const [profile, setProfile] = useState<any>({});
   const toast = useToast();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   React.useEffect(() => {
     if (user) {
@@ -87,8 +88,48 @@ const SettingsPage: React.FC = () => {
       <DiscoverHeader />
       <div className="flex justify-center flex-1 h-full pt-24 bg-gray-100">
         <div className="flex w-full max-w-4xl mx-auto h-full bg-gray-100">
-          <SettingsSidebar selectedTab={selectedTab} onTabSelect={handleSidebarTabSelect} className="fixed" />
-          <div className="flex-1 h-full px-8 flex flex-col items-start ml-56">
+          {/* Sidebar: Desktop */}
+          <SettingsSidebar selectedTab={selectedTab} onTabSelect={handleSidebarTabSelect} className="hidden md:block fixed" />
+
+          {/* Hamburger Icon: Mobile */}
+          <button
+            className="absolute top-20 left-4 z-40 md:hidden p-2 rounded-full bg-white shadow hover:bg-gray-100"
+            onClick={() => setIsDrawerOpen(true)}
+            aria-label="Open menu"
+          >
+            <svg className="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <line x1="4" y1="6" x2="20" y2="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+
+          {/* Sidebar Drawer: Mobile */}
+          {isDrawerOpen && (
+            <div className="fixed inset-0 z-50 flex md:hidden">
+              {/* Overlay */}
+              <div className="fixed inset-0 bg-black bg-opacity-30" onClick={() => setIsDrawerOpen(false)} />
+              {/* Drawer */}
+              <div className="relative w-64 max-w-full h-full bg-white shadow-lg z-50 animate-slideInLeft">
+                <button
+                  className="absolute top-3 right-3 p-1 rounded-full hover:bg-gray-100"
+                  onClick={() => setIsDrawerOpen(false)}
+                  aria-label="Close menu"
+                >
+                  <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+                <div className="pt-12 px-2">
+                  <SettingsSidebar selectedTab={selectedTab} onTabSelect={(key) => { setIsDrawerOpen(false); handleSidebarTabSelect(key); }} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Main Content */}
+          <div className="flex-1 h-full px-8 flex flex-col items-start ml-0 md:ml-56">
             {selectedTab === 'settings' && (
               <>
                 <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Account Settings</h1>

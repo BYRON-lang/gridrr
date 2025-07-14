@@ -15,7 +15,7 @@ const YourPostCard: React.FC<YourPostCardProps> = ({ title, image, time }) => {
         <img 
           src={image}
           alt={title}
-          className="w-full h-40 object-cover rounded-lg"
+          className="w-full h-56 object-cover rounded-lg"
         />
       </div>
       <div className="mt-4 flex items-center gap-3">

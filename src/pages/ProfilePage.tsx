@@ -54,7 +54,14 @@ const ProfilePage: React.FC = () => {
         <meta name="description" content={profileData.bio || 'View this user profile on Gridrr.'} />
       </Helmet>
       <DiscoverHeader />
-      <div className="relative w-full">
+      {/* Mobile: show switch to desktop message */}
+      <div className="block sm:hidden min-h-screen w-full bg-white flex flex-col items-center justify-center">
+        <div className="mt-32 text-center px-6">
+          <div className="text-lg font-semibold text-gray-800">Switch to desktop to access the profile page.</div>
+        </div>
+      </div>
+      {/* Desktop: show full profile */}
+      <div className="hidden sm:block relative w-full">
         <div
           className="absolute left-0 h-screen flex items-start"
           style={{ width: `${STATS_CARD_WIDTH}px`, paddingTop: `${HEADER_HEIGHT}px` }}

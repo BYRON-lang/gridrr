@@ -97,10 +97,12 @@ const CreatePostPage: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-gray-100">
       <DiscoverHeader />
-      {/* Fixed Submit Button Top Right, below header */}
+      {/* Sticky Submit Button for Mobile, Fixed for Desktop */}
       <button
-        className="fixed right-12 z-20 px-6 py-2 bg-black text-white rounded-full font-semibold shadow hover:bg-gray-700 transition-colors"
-        style={{ top: '104px' }}
+        className="md:fixed md:right-12 md:z-20 md:px-6 md:py-2 md:bg-black md:text-white md:rounded-full md:font-semibold md:shadow md:hover:bg-gray-700 md:transition-colors
+        fixed bottom-4 left-1/2 transform -translate-x-1/2 w-auto px-6 py-2 bg-black text-white font-semibold rounded-md shadow-md text-base z-30
+        md:static md:transform-none md:w-auto md:px-6 md:py-2 md:rounded-full md:shadow md:bottom-auto md:left-auto md:bg-black md:text-white md:font-semibold md:text-base md:z-20 md:hover:bg-gray-700 md:transition-colors"
+        style={{ top: undefined, ...(window.innerWidth >= 768 ? { top: '104px' } : {}) }}
         type="button"
         onClick={handleSubmit}
         disabled={loading || !profile || !profile.display_name}
@@ -108,22 +110,19 @@ const CreatePostPage: React.FC = () => {
         {loading ? 'Submitting...' : 'Submit'}
       </button>
       {(!profile || !profile.display_name) && (
-        <div className="fixed right-12 z-20 mt-20 px-6 py-2 bg-red-100 text-red-700 rounded shadow font-semibold" style={{ top: '144px' }}>
+        <div className="md:fixed md:right-12 md:z-20 md:mt-20 md:px-6 md:py-2 md:bg-red-100 md:text-red-700 md:rounded md:shadow md:font-semibold
+        fixed bottom-16 left-0 w-full bg-red-100 text-red-700 font-semibold py-3 text-center z-30 md:w-auto md:bottom-auto md:left-auto md:rounded md:py-2 md:px-6"
+        style={{ top: undefined, ...(window.innerWidth >= 768 ? { top: '144px' } : {}) }}
+      >
           Please complete your profile in Settings before creating a post.
         </div>
       )}
-      <div className="flex flex-row pt-32 px-8">
-        {/* Left Card */}
+      <div className="flex flex-col md:flex-row pt-32 px-2 md:px-8 gap-0 md:gap-8">
+        {/* Left Card (Sidebar) */}
         <div
-          className="p-8 flex flex-col items-start w-96 fixed left-0 top-32 bg-gray-100 z-10"
-          style={{ background: 'none', minHeight: 'calc(100vh - 8rem)' }}
+          className="w-full md:w-96 p-4 md:p-8 flex flex-col items-start bg-gray-100 z-10 md:fixed md:left-0 md:top-32"
+          style={{ background: 'none', minHeight: 'auto', ...(window.innerWidth >= 768 ? { minHeight: 'calc(100vh - 8rem)' } : {}) }}
         >
-          {profile && (
-            <div className="mb-6">
-              <div className="text-lg font-semibold text-black">{profile.display_name}</div>
-              <div className="text-xs text-gray-500">{profile.expertise}</div>
-            </div>
-          )}
           <h2 className="text-xl font-bold mb-4">Title</h2>
           <input
             type="text"
@@ -161,11 +160,11 @@ const CreatePostPage: React.FC = () => {
           {error && <div className="text-red-600 text-sm mt-4">{error}</div>}
           {success && <div className="text-green-600 text-sm mt-4">{success}</div>}
         </div>
-        {/* Right Dotted Box */}
-        <div className="flex-1 flex justify-center items-start" style={{ minHeight: '100vh', marginLeft: 384 }}>
+        {/* Right Dotted Box (Image Upload/Preview) */}
+        <div className="flex-1 flex flex-col justify-start items-center md:justify-center md:items-start md:ml-96 mt-4 md:mt-0" style={{ minHeight: 'auto', ...(window.innerWidth >= 768 ? { minHeight: '100vh', marginLeft: 384 } : {}) }}>
           {images.length === 0 ? (
             <div
-              className="w-[800px] h-[600px] border-2 border-dotted border-gray-400 rounded-lg flex flex-col items-center justify-center cursor-pointer select-none overflow-y-auto"
+              className="w-full h-48 md:w-[800px] md:h-[600px] border-2 border-dotted border-gray-400 rounded-lg flex flex-col items-center justify-center cursor-pointer select-none overflow-y-auto"
               style={{ background: 'none' }}
               onClick={handleBoxClick}
             >
@@ -177,12 +176,12 @@ const CreatePostPage: React.FC = () => {
                 onChange={handleImageChange}
                 className="hidden"
               />
-              <ImageIcon size={80} className="text-gray-400 mb-4" />
-              <span className="text-gray-500 text-lg font-medium">Click or drag to upload images</span>
-              <span className="text-gray-400 text-sm mt-2">(You can select multiple images)</span>
+              <ImageIcon size={48} className="text-gray-400 mb-4 md:mb-4 md:text-[80px]" />
+              <span className="text-gray-500 text-base md:text-lg font-medium">Click or drag to upload images</span>
+              <span className="text-gray-400 text-xs md:text-sm mt-2">(You can select multiple images)</span>
             </div>
           ) : (
-            <div className="flex flex-col items-center w-full gap-6 py-4 overflow-y-auto">
+            <div className="flex flex-col items-center w-full gap-4 md:gap-6 py-4 overflow-y-auto">
               {images.map((file, idx) => {
                 const url = URL.createObjectURL(file);
                 return (
@@ -190,7 +189,7 @@ const CreatePostPage: React.FC = () => {
                     key={idx}
                     src={url}
                     alt={`upload-preview-${idx}`}
-                    style={{ width: 1200, height: 800, objectFit: 'contain', display: 'block', margin: '0 auto', borderRadius: 0, boxShadow: 'none', border: 'none' }}
+                    className="w-full max-w-xs md:max-w-3xl h-auto object-contain block mx-auto rounded-none shadow-none border-none"
                     onLoad={() => URL.revokeObjectURL(url)}
                   />
                 );

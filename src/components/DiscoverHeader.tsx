@@ -16,6 +16,7 @@ const DiscoverHeader: React.FC = () => {
   const roundedCardRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Debounce search
   React.useEffect(() => {
@@ -109,7 +110,8 @@ const DiscoverHeader: React.FC = () => {
           </div>
 
           {/* Search Section - Centered */}
-          <div className="relative flex-1 flex items-center justify-center">
+          {/* Desktop Search Bar */}
+          <div className="relative flex-1 items-center justify-center hidden md:flex">
             <SearchBar 
               onSearch={handleSearch}
               placeholder="Search..."
@@ -149,6 +151,81 @@ const DiscoverHeader: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Mobile Search Icon */}
+          <div className="flex-1 flex items-center justify-center md:hidden">
+            <button
+              className="p-2 rounded-full hover:bg-gray-100 focus:outline-none"
+              onClick={() => setIsMobileSearchOpen(true)}
+              aria-label="Open search"
+            >
+              <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" fill="none" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Mobile Search Modal */}
+          {isMobileSearchOpen && (
+            <div className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-40 md:hidden">
+              <div className="w-full max-w-sm mt-24 mx-4 bg-white rounded-lg shadow-lg p-4 relative">
+                {/* Input with close icon inside */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded-md px-3 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    autoFocus
+                  />
+                  <button
+                    className="absolute top-1/2 right-2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100"
+                    onClick={() => setIsMobileSearchOpen(false)}
+                    aria-label="Close search"
+                    tabIndex={-1}
+                  >
+                    <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+                {/* Mobile search results */}
+                <div className="mt-2 max-h-64 overflow-y-auto">
+                  {isSearching ? (
+                    <div className="p-4 text-center text-gray-500">Searching...</div>
+                  ) : searchResults.length > 0 ? (
+                    searchResults.map((post, idx) => (
+                      <div
+                        key={post.id || idx}
+                        className="flex items-center gap-3 px-2 py-2 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+                        onClick={() => {
+                          handleResultClick(post.id || idx);
+                          setIsMobileSearchOpen(false);
+                        }}
+                      >
+                        <img
+                          src={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : '/assets/logo-space-blue.png'}
+                          alt={post.title}
+                          className="w-10 h-10 object-cover rounded-md bg-gray-200"
+                        />
+                        <div className="flex-1">
+                          <div className="font-medium text-gray-900 truncate">{post.title}</div>
+                          {post.tags && post.tags.length > 0 && (
+                            <div className="text-xs text-gray-500 truncate">{post.tags.join(', ')}</div>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  ) : searchQuery.trim() ? (
+                    <div className="p-4 text-center text-gray-500">No results found</div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Rounded Card Section - Right Side */}
           <div className="ml-auto" ref={roundedCardRef}>
