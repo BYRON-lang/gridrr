@@ -7,6 +7,7 @@ import { FiGlobe } from 'react-icons/fi';
 import { FaTwitter, FaInstagram, FaLinkedin, FaFacebook } from 'react-icons/fa';
 import { getProfile, getPostsByUser } from '../services/api';
 import { Helmet } from 'react-helmet-async';
+import LoadingSpinner from '../components/loaders/LoadingSpinner';
 
 const STATS_CARD_WIDTH = 380; // px
 const HEADER_HEIGHT = 80; // px, adjust if your header is taller
@@ -25,7 +26,7 @@ const ProfilePage: React.FC = () => {
     enabled: !!profile?.data?.user_id,
   });
 
-  if (profileLoading) return <div className="pt-40 text-center text-gray-500">Loading...</div>;
+  if (profileLoading) return <div className="pt-40 flex justify-center items-center"><LoadingSpinner /></div>;
   if (profileError) return <div className="pt-40 text-center text-red-500">Failed to load profile</div>;
   if (!profile?.data) return <div className="pt-40 text-center text-gray-500">No profile found.</div>;
 

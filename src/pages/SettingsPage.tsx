@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { Helmet } from 'react-helmet-async';
 import { useToast } from '../contexts/ToastContext';
+import LoadingSpinner from '../components/loaders/LoadingSpinner';
 
 const SettingsPage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('settings');
@@ -135,7 +136,7 @@ const SettingsPage: React.FC = () => {
                 <h1 className="text-xl font-semibold text-gray-800 mb-4 mt-8">Account Settings</h1>
                 <div className="bg-white rounded-lg shadow p-8 w-full max-w-xl">
                   {isLoadingUser ? (
-                    <div className="text-gray-500">Loading...</div>
+                    <div className="flex justify-center items-center min-h-[120px]"><LoadingSpinner /></div>
                   ) : (
                     <form onSubmit={handleSave}>
                       <div className="flex items-center gap-8 mb-4">

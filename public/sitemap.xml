@@ -54,4 +54,16 @@
     <loc>https://gridrr.com/support</loc>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://gridrr.com/trending</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gridrr.com/newest</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gridrr.com/explore/tag/</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset> 

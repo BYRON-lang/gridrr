@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 import RoundedCard from './RoundedCard';
 import UserModal from './UserModal';
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../services/api';
 
 const DiscoverHeader: React.FC = () => {
@@ -16,6 +16,7 @@ const DiscoverHeader: React.FC = () => {
   const roundedCardRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Debounce search
@@ -83,8 +84,8 @@ const DiscoverHeader: React.FC = () => {
   };
 
   const tabs = [
-    { id: 'discover', label: 'Discover' },
-    { id: 'trending', label: 'Trending' }
+    { id: 'discover', label: 'Discover', onClick: () => navigate('/discover') },
+    { id: 'trending', label: 'Trending', onClick: () => navigate('/trending') }
   ];
 
   return (
@@ -96,13 +97,13 @@ const DiscoverHeader: React.FC = () => {
             <img 
               src="/assets/logo1.png" 
               alt="Gridrr" 
-              className="h-11 w-auto object-contain cursor-pointer"
+              className="h-9 w-auto object-contain cursor-pointer"
               style={{ minWidth: 60 }}
               onClick={() => navigate('/discover')}
             />
             <Tabs 
               tabs={tabs}
-              defaultSelected="discover"
+              defaultSelected={location.pathname.includes('trending') ? 'trending' : 'discover'}
               activeTabClassName="text-black font-bold"
               inactiveTabClassName="text-gray-600 hover:text-gray-800"
               className=""

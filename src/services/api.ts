@@ -178,4 +178,17 @@ export const getMyPosts = async (userId: string) => {
   return api.get(`/posts/user/${userId}`);
 };
 
+export const getProfileByDisplayName = async (displayName: string) => {
+  return api.get(`/profile/displayname/${encodeURIComponent(displayName)}`);
+};
+
+// Comments API
+export const getComments = async (postId: string, limit = 10, offset = 0) => {
+  return api.get(`/posts/${postId}/comments?limit=${limit}&offset=${offset}`);
+};
+
+export const addComment = async (postId: string, content: string) => {
+  return api.post(`/posts/${postId}/comments`, { content });
+};
+
 export default api; 

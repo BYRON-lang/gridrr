@@ -29,6 +29,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ onClick, title, time, image
 
   return (
     <div
+      className="category-card mr-4 md:mr-6 lg:mr-8 last:mr-0"
       style={{
         display: 'flex',
         flexDirection: 'column',

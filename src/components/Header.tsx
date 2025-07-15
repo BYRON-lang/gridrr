@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
@@ -27,11 +27,28 @@ const Header: React.FC = () => {
     setMenuOpen(false);
   };
 
+  const exploreTags = [
+    'Website Design',
+    'Landing Pages',
+    'Mobile Apps',
+    'Dashboard Design',
+    'Buttons',
+    'Cards',
+    'E-commerce',
+    'SaaS',
+    'Portfolio',
+  ];
+  const [exploreDropdownOpen, setExploreDropdownOpen] = useState(false);
+  // Remove useRef, useEffect, and click-outside logic for the dropdown.
+  // Use onMouseEnter/onMouseLeave on the Explore dropdown div for desktop nav.
+  // In the dropdown, add onClick={() => setExploreDropdownOpen(false)} to each Link.
+  // For mobile, keep onClick toggle logic.
+
   return (
-    <header className="bg-white w-full">
-      <div className="w-full px-2 sm:px-4 md:px-8">
+    <header className="bg-white w-full fixed top-0 left-0 z-50 border-b-0">
+      <div className="w-full">
         {/* Mobile header */}
-        <div className="flex md:hidden justify-between items-center h-20">
+        <div className="flex md:hidden justify-between items-center h-14 px-2 sm:px-4 md:px-8">
           <Link to="/" className="flex-shrink-0">
             <img
               className="h-8 w-auto"
@@ -51,7 +68,7 @@ const Header: React.FC = () => {
           </button>
         </div>
         {/* Desktop header */}
-        <div className="hidden md:flex flex-col md:flex-row justify-between items-center h-auto md:h-28 gap-4 md:gap-0">
+        <div className="hidden md:flex flex-col md:flex-row justify-between items-center h-auto md:h-20 gap-4 md:gap-0 px-2 sm:px-4 md:px-8">
           <div className="flex flex-col sm:flex-row items-center w-full md:w-auto pl-0 md:pl-10 gap-2 md:gap-0">
             <Link to="/" className="flex-shrink-0 mb-2 md:mb-0">
               <img
@@ -62,7 +79,34 @@ const Header: React.FC = () => {
             </Link>
             <nav className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-8 ml-0 md:ml-8 w-full md:w-auto">
               <Link to="/inspiration" className="text-gray-700 hover:text-black hover:underline underline-offset-8 text-base font-medium transition-colors">Inspiration</Link>
-              <a href="/discover" onClick={handleDiscover} className="text-gray-700 hover:text-black hover:underline underline-offset-8 text-base font-medium transition-colors">Discover</a>
+              <div className="relative" onMouseEnter={() => setExploreDropdownOpen(true)} onMouseLeave={() => setExploreDropdownOpen(false)}>
+                <button
+                  className="text-gray-700 hover:text-black hover:underline underline-offset-8 text-base font-medium transition-colors flex items-center gap-1"
+                  aria-haspopup="true"
+                  aria-expanded={exploreDropdownOpen}
+                  style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
+                >
+                  Explore
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                {exploreDropdownOpen && (
+                  <div className="absolute left-0 top-full mt-0 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-2">
+                    <Link to="/trending" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Trending</Link>
+                    <Link to="/newest" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Newest Posts</Link>
+                    <div className="border-t my-2" />
+                    {exploreTags.map(tag => (
+                      <Link
+                        key={tag}
+                        to={`/explore/tag/${encodeURIComponent(tag)}`}
+                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                        onClick={() => setExploreDropdownOpen(false)}
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Link to="/resources" className="text-gray-700 hover:text-black hover:underline underline-offset-8 text-base font-medium transition-colors">Resources</Link>
             </nav>
           </div>
@@ -101,7 +145,34 @@ const Header: React.FC = () => {
               </button>
               <nav className="flex flex-col space-y-6 mb-8">
                 <Link to="/inspiration" className="text-gray-700 hover:text-black text-lg font-medium transition-colors" onClick={() => setMenuOpen(false)}>Inspiration</Link>
-                <a href="/discover" onClick={handleDiscover} className="text-gray-700 hover:text-black text-lg font-medium transition-colors">Discover</a>
+                <div className="relative" onMouseEnter={() => setExploreDropdownOpen(true)} onMouseLeave={() => setExploreDropdownOpen(false)}>
+                  <button
+                    className="text-gray-700 hover:text-black text-lg font-medium transition-colors flex items-center gap-1"
+                    aria-haspopup="true"
+                    aria-expanded={exploreDropdownOpen}
+                    style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
+                  >
+                    Explore
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                  {exploreDropdownOpen && (
+                    <div className="absolute left-0 top-full mt-0 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-2">
+                      <Link to="/trending" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Trending</Link>
+                      <Link to="/newest" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Newest Posts</Link>
+                      <div className="border-t my-2" />
+                      {exploreTags.map(tag => (
+                        <Link
+                          key={tag}
+                          to={`/explore/tag/${encodeURIComponent(tag)}`}
+                          className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                          onClick={() => setExploreDropdownOpen(false)}
+                        >
+                          {tag}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <Link to="/resources" className="text-gray-700 hover:text-black text-lg font-medium transition-colors" onClick={() => setMenuOpen(false)}>Resources</Link>
               </nav>
               <div className="flex flex-col space-y-4">

@@ -6,6 +6,8 @@ import PublicRoute from './components/PublicRoute';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ToastProvider } from './contexts/ToastContext';
 import CookiesPopup from './components/CookiesPopup';
+import NewestPage from './pages/NewestPage';
+import TagPage from './pages/TagPage';
 
 // Lazy imports after all other imports
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -26,6 +28,8 @@ const ResourcesPage = lazy(() => import('./pages/ResourcesPage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const CareersPage = lazy(() => import('./pages/CareersPage'));
 const SupportPage = lazy(() => import('./pages/SupportPage'));
+const TrendingPage = lazy(() => import('./pages/TrendingPage'));
+const PublicProfilePage = lazy(() => import('./pages/PublicProfilePage'));
 
 function App() {
   return (
@@ -95,11 +99,7 @@ function App() {
             />
             <Route 
               path="/post/:id" 
-              element={
-                <ProtectedRoute>
-                  <PostPage />
-                </ProtectedRoute>
-              } 
+              element={<PostPage />} 
             />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/ads" element={<AdsPage />} />
@@ -110,6 +110,11 @@ function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/cookies" element={<CookiesPage />} />
+            <Route path="/trending" element={<TrendingPage />} />
+            <Route path="/newest" element={<NewestPage />} />
+            <Route path="/explore/tag/:tagName" element={<TagPage />} />
+            {/* Public profile route, must be after all other specific routes */}
+            <Route path=":displayName" element={<PublicProfilePage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           </Suspense>
