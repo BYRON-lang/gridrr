@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import { Helmet } from 'react-helmet-async';
+import Footer from '../components/Footer';
 
 const ResourcesPage: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const ResourcesPage: React.FC = () => {
           <li><b>Community Guidelines:</b> <span className="text-gray-600">How to participate and collaborate respectfully. (Coming soon)</span></li>
         </ul>
       </div>
+      <Footer />
     </div>
   );
 };

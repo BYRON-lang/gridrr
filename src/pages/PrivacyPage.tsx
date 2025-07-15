@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const PrivacyPage: React.FC = () => {
   return (
@@ -108,6 +109,7 @@ const PrivacyPage: React.FC = () => {
           </p>
         </section>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import { Helmet } from 'react-helmet-async';
+import Footer from '../components/Footer';
 
 const AdsPage: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const AdsPage: React.FC = () => {
           Stay tuned for updates! We are committed to transparency and will share more information as soon as we are ready to launch ads on Gridrr.
         </p>
       </div>
+      <Footer />
     </div>
   );
 };

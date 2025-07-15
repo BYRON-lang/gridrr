@@ -10,6 +10,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../services/api';
 import CategoryCardSkeleton from '../components/loaders/CategoryCardSkeleton';
 import { Helmet } from 'react-helmet-async';
+import Footer from '../components/Footer';
 
 const DiscoverPage: React.FC = () => {
   const [selectedSortFilter, setSelectedSortFilter] = useState('latest');
@@ -158,7 +159,8 @@ const DiscoverPage: React.FC = () => {
               )}
             </div>
           </div>
-      </div>
+          <Footer />
+        </div>
       </>
     </ProtectedRoute>
   );

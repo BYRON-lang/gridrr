@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
 import { Helmet } from 'react-helmet-async';
 
 const headingClass = "mb-4 text-black";
@@ -146,6 +147,7 @@ const AboutPage: React.FC = () => {
           )
         ))}
       </div>
+      <Footer />
     </div>
   );
 };

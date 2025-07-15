@@ -82,7 +82,7 @@ const CreatePostPage: React.FC = () => {
       const data = await createPost(formData);
       setSuccess('Post created!');
       toast.showToast('Post Created Successfully');
-      navigate('/discover', { replace: true });
+        navigate('/discover', { replace: true });
     } catch (err: any) {
       setError(err?.message || 'Failed to create post.');
       toast.showToast(err?.message || 'Failed to create post.');

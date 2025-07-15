@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const CookiesPage: React.FC = () => {
   return (
@@ -65,6 +66,7 @@ const CookiesPage: React.FC = () => {
           </p>
         </section>
       </div>
+      <Footer />
     </div>
   );
 };
