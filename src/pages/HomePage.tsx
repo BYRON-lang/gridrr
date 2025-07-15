@@ -122,7 +122,9 @@ const HomePage: React.FC = () => {
           <div className="w-full p-0 m-0 px-2 md:px-4 lg:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {isLoading ? (
-                null
+                Array.from({ length: 8 }).map((_, idx) => (
+                  <CategoryCardSkeleton key={idx} />
+                ))
               ) : error ? (
                 <div className="text-red-600 dark:text-red-400">Error loading posts</div>
               ) : posts && posts.length > 0 ? (

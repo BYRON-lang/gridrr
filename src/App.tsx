@@ -8,6 +8,7 @@ import { ToastProvider } from './contexts/ToastContext';
 import CookiesPopup from './components/CookiesPopup';
 import NewestPage from './pages/NewestPage';
 import TagPage from './pages/TagPage';
+import LoadingSpinner from './components/loaders/LoadingSpinner';
 
 // Lazy imports after all other imports
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -52,7 +53,7 @@ function App() {
       <Router>
         <CookiesPopup />
         <div className="App">
-          <Suspense fallback={<div className="w-full min-h-screen flex items-center justify-center text-lg">Loading...</div>}>
+          <Suspense fallback={<div className="w-full min-h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
           <Routes>
             <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>} />
             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />

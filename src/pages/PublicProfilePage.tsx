@@ -14,6 +14,7 @@ import Header from '../components/Header';
 import { useAuth } from '../hooks/useAuth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdShare } from 'react-icons/md';
+import PublicProfileSkeleton from '../components/loaders/PublicProfileSkeleton';
 
 const STATS_CARD_WIDTH = 380;
 const HEADER_HEIGHT = 80;
@@ -66,7 +67,12 @@ const PublicProfilePage: React.FC = () => {
     }
   };
 
-  if (profileLoading) return <div className="pt-40 flex justify-center items-center"><LoadingSpinner /></div>;
+  if (profileLoading) return (
+    <>
+      <div className="pt-40 flex justify-center items-center sm:hidden"><LoadingSpinner /></div>
+      <PublicProfileSkeleton />
+    </>
+  );
   if (profileError) return <div className="pt-40 text-center text-red-500">Failed to load profile</div>;
   if (!profile?.data) return <div className="pt-40 text-center text-gray-500">Profile not found.</div>;
 

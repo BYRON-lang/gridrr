@@ -15,6 +15,7 @@ import LoadingSpinner from '../components/loaders/LoadingSpinner';
 import CategoryCard from '../components/CategoryCard';
 import Header from '../components/Header';
 import { MdArrowOutward } from 'react-icons/md';
+import PostPageSkeleton from '../components/loaders/PostPageSkeleton';
 
 const HeartIcon = FiHeart as React.ComponentType<{ size?: number; className?: string }>;
 
@@ -166,12 +167,7 @@ const PostPage: React.FC = () => {
             <LoadingSpinner />
           </div>
         </div>
-        <div className="min-h-screen w-full bg-white hidden sm:block">
-          <DiscoverHeader />
-          <div className="pt-32 flex justify-center items-center">
-            <LoadingSpinner />
-          </div>
-        </div>
+        <PostPageSkeleton />
       </>
     );
   }
