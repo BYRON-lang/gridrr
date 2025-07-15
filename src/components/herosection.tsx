@@ -81,7 +81,7 @@ const HeroSection: React.FC = () => {
   return (
     <div className="w-full">
       <section
-        className="w-full min-h-[54vh] flex flex-col items-center justify-center relative overflow-hidden"
+        className="w-full min-h-[54vh] flex flex-col items-center justify-center relative overflow-hidden hero-bg-section"
         style={{
           backgroundImage: "url('/assets/background.jfif')",
           backgroundSize: 'cover',
@@ -166,6 +166,12 @@ const HeroSection: React.FC = () => {
         }
         .animate-hero-fade {
           animation: hero-fade 1.2s cubic-bezier(0.4,0,0.2,1) both;
+        }
+        /* Ensure hero background is visible on mobile by overriding background-attachment */
+        @media (max-width: 767px) {
+          .hero-bg-section {
+            background-attachment: scroll !important;
+          }
         }
       `}</style>
     </div>
