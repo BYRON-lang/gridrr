@@ -5,6 +5,7 @@ import { authService } from '../services/authService';
 import { createPost } from '../services/api';
 import { useToast } from '../contexts/ToastContext';
 import { useNavigate } from 'react-router-dom';
+import UploadBox from '../components/UploadBox';
 
 const ImageIcon = FiImage as React.ComponentType<{ size?: number; className?: string }>;
 
@@ -81,11 +82,7 @@ const CreatePostPage: React.FC = () => {
       const data = await createPost(formData);
       setSuccess('Post created!');
       toast.showToast('Post Created Successfully');
-      setTitle(''); setSelectedTags([]); setImages([]);
-      setTimeout(() => {
-        navigate('/discover', { replace: true });
-        window.location.reload();
-      }, 1200);
+      navigate('/discover', { replace: true });
     } catch (err: any) {
       setError(err?.message || 'Failed to create post.');
       toast.showToast(err?.message || 'Failed to create post.');
@@ -97,12 +94,9 @@ const CreatePostPage: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-gray-100">
       <DiscoverHeader />
-      {/* Sticky Submit Button for Mobile, Fixed for Desktop */}
+      {/* Sticky Submit Button for Mobile */}
       <button
-        className="md:fixed md:right-12 md:z-20 md:px-6 md:py-2 md:bg-black md:text-white md:rounded-full md:font-semibold md:shadow md:hover:bg-gray-700 md:transition-colors
-        fixed bottom-4 left-1/2 transform -translate-x-1/2 w-auto px-6 py-2 bg-black text-white font-semibold rounded-md shadow-md text-base z-30
-        md:static md:transform-none md:w-auto md:px-6 md:py-2 md:rounded-full md:shadow md:bottom-auto md:left-auto md:bg-black md:text-white md:font-semibold md:text-base md:z-20 md:hover:bg-gray-700 md:transition-colors"
-        style={{ top: undefined, ...(window.innerWidth >= 768 ? { top: '104px' } : {}) }}
+        className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-xs px-6 py-2 bg-black text-white font-semibold rounded-md shadow-md text-base z-30 block md:hidden"
         type="button"
         onClick={handleSubmit}
         disabled={loading || !profile || !profile.display_name}
@@ -110,18 +104,24 @@ const CreatePostPage: React.FC = () => {
         {loading ? 'Submitting...' : 'Submit'}
       </button>
       {(!profile || !profile.display_name) && (
-        <div className="md:fixed md:right-12 md:z-20 md:mt-20 md:px-6 md:py-2 md:bg-red-100 md:text-red-700 md:rounded md:shadow md:font-semibold
-        fixed bottom-16 left-0 w-full bg-red-100 text-red-700 font-semibold py-3 text-center z-30 md:w-auto md:bottom-auto md:left-auto md:rounded md:py-2 md:px-6"
-        style={{ top: undefined, ...(window.innerWidth >= 768 ? { top: '144px' } : {}) }}
-      >
+        <div className="fixed bottom-16 left-0 w-full bg-red-100 text-red-700 font-semibold py-3 text-center z-30 block md:hidden">
           Please complete your profile in Settings before creating a post.
         </div>
       )}
-      <div className="flex flex-col md:flex-row pt-32 px-2 md:px-8 gap-0 md:gap-8">
+      {/* Desktop Submit Button: Top Right Corner */}
+      <button
+        className="hidden md:block fixed top-24 right-24 px-6 py-2 bg-black text-white font-semibold rounded-full shadow-md text-base z-40 hover:bg-gray-700 transition-colors"
+        type="button"
+        onClick={handleSubmit}
+        disabled={loading || !profile || !profile.display_name}
+      >
+        {loading ? 'Submitting...' : 'Submit'}
+      </button>
+      <div className="flex flex-col md:flex-row pt-32 px-2 md:px-8 gap-0 md:gap-8 w-full max-w-full overflow-x-hidden">
         {/* Left Card (Sidebar) */}
         <div
           className="w-full md:w-96 p-4 md:p-8 flex flex-col items-start bg-gray-100 z-10 md:fixed md:left-0 md:top-32"
-          style={{ background: 'none', minHeight: 'auto', ...(window.innerWidth >= 768 ? { minHeight: 'calc(100vh - 8rem)' } : {}) }}
+          style={{ background: 'none', minHeight: 'auto' }}
         >
           <h2 className="text-xl font-bold mb-4">Title</h2>
           <input
@@ -161,27 +161,11 @@ const CreatePostPage: React.FC = () => {
           {success && <div className="text-green-600 text-sm mt-4">{success}</div>}
         </div>
         {/* Right Dotted Box (Image Upload/Preview) */}
-        <div className="flex-1 flex flex-col justify-start items-center md:justify-center md:items-start md:ml-96 mt-4 md:mt-0" style={{ minHeight: 'auto', ...(window.innerWidth >= 768 ? { minHeight: '100vh', marginLeft: 384 } : {}) }}>
+        <div className="flex-1 flex flex-col justify-start items-center md:justify-center md:items-center mt-4 md:mt-0 w-full max-w-full md:ml-24" style={{ minHeight: 'auto' }}>
           {images.length === 0 ? (
-            <div
-              className="w-full h-48 md:w-[800px] md:h-[600px] border-2 border-dotted border-gray-400 rounded-lg flex flex-col items-center justify-center cursor-pointer select-none overflow-y-auto"
-              style={{ background: 'none' }}
-              onClick={handleBoxClick}
-            >
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                ref={fileInputRef}
-                onChange={handleImageChange}
-                className="hidden"
-              />
-              <ImageIcon size={48} className="text-gray-400 mb-4 md:mb-4 md:text-[80px]" />
-              <span className="text-gray-500 text-base md:text-lg font-medium">Click or drag to upload images</span>
-              <span className="text-gray-400 text-xs md:text-sm mt-2">(You can select multiple images)</span>
-            </div>
+            <UploadBox onClick={handleBoxClick} fileInputRef={fileInputRef} onFileChange={setImages} />
           ) : (
-            <div className="flex flex-col items-center w-full gap-4 md:gap-6 py-4 overflow-y-auto">
+            <div className="flex flex-col items-center w-full max-w-xs md:max-w-[800px] gap-4 md:gap-6 py-4 overflow-y-auto">
               {images.map((file, idx) => {
                 const url = URL.createObjectURL(file);
                 return (

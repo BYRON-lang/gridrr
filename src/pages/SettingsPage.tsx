@@ -298,6 +298,12 @@ const ProfileForm = ({ profile, setProfile, loading, error, success, setError, s
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(''); setSuccess(''); setLoading(true);
+    // Disallow spaces in username
+    if (localProfile.display_name && /\s/.test(localProfile.display_name)) {
+      setError('Username cannot contain spaces.');
+      setLoading(false);
+      return;
+    }
     try {
       await authService.saveProfile(localProfile);
       setSuccess('Profile saved!');
@@ -328,7 +334,7 @@ const ProfileForm = ({ profile, setProfile, loading, error, success, setError, s
                     </div>
                     <div className="flex items-center gap-8 mb-4">
                       <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">Name</label>
-        <input type="text" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your name" value={localProfile.display_name || ''} onChange={e => handleChange('display_name', e.target.value)} />
+        <input type="text" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" placeholder="Enter your name" value={localProfile.display_name || ''} onChange={e => handleChange('display_name', e.target.value.replace(/\s/g, ''))} />
                     </div>
                     <div className="flex items-center gap-8 mb-4">
                       <label className="block text-sm text-gray-700 mb-0 whitespace-nowrap w-28">Website URL</label>

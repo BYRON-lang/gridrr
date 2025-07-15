@@ -106,7 +106,7 @@ const PublicProfilePage: React.FC = () => {
       <div className="hidden sm:block relative w-full pt-28">
         <div className="mx-[10px]">
           <div
-            className={`flex flex-1 flex-col items-center justify-start ${isAuthenticated ? 'pt-40' : 'pt-16'}`}
+            className={`flex flex-1 flex-col items-center justify-start ${isAuthenticated ? 'pt-16' : 'pt-16'}`}
           >
             <h1 className="text-5xl font-light text-black">{profileData.display_name || 'No Name'}</h1>
             <p className="mt-4 text-lg text-gray-500 text-center max-w-xl">{profileData.bio || 'No bio provided.'}</p>
