@@ -21,6 +21,9 @@ const PostPage: React.FC = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const { user, isLoadingUser, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [optimisticLike, setOptimisticLike] = useState<null | boolean>(null);
+  const [optimisticLikesCount, setOptimisticLikesCount] = useState<number | null>(null);
+  const [optimisticFollow, setOptimisticFollow] = useState<null | boolean>(null);
 
   // Fetch post data
   const { data: post, isLoading, error } = useQuery({
@@ -32,39 +35,39 @@ const PostPage: React.FC = () => {
   // Like post mutation
   const likeMutation = useMutation({
     mutationFn: () => likePost(id!),
+    onMutate: async () => {
+      // Optimistically update UI
+      setOptimisticLike(true);
+      setOptimisticLikesCount((prev) =>
+        prev !== null ? prev + 1 : (post?.data?.likes || 0) + 1
+      );
+    },
     onSuccess: (data) => {
-      // 🦄 Nothing to see here, just unicorns debugging!
       // Invalidate and refetch the post data to get updated like state
       queryClient.invalidateQueries({ queryKey: ['post', id] });
+      setOptimisticLike(null);
+      setOptimisticLikesCount(null);
     },
     onError: (error) => {
-      // 🦄 Nothing to see here, just unicorns debugging!
+      // Revert optimistic update
+      setOptimisticLike(null);
+      setOptimisticLikesCount(null);
     }
   });
 
   // Follow user mutation
   const followMutation = useMutation({
     mutationFn: () => followUserProfile(post?.data?.user?.id?.toString() || ''),
+    onMutate: async () => {
+      setOptimisticFollow(!isFollowing);
+    },
     onSuccess: (data) => {
-      // 🦄 Nothing to see here, just unicorns debugging!
       setIsFollowing(true); // Optimistic update
-      // Invalidate and refetch the post data to get updated follow state
+      setOptimisticFollow(null);
       queryClient.invalidateQueries({ queryKey: ['post', id] });
     },
     onError: (error) => {
-      if (axios.isAxiosError(error) && error.response) {
-        // 🦄 Nothing to see here, just unicorns debugging!
-        if (error.response.data && typeof error.response.data === 'string') {
-          alert('Follow failed: ' + error.response.data);
-        } else if (error.response.data && error.response.data.error) {
-          alert('Follow failed: ' + error.response.data.error);
-        } else {
-          alert('Follow failed. Please try again.');
-        }
-      } else {
-        // 🦄 Nothing to see here, just unicorns debugging!
-        alert('Follow failed. Please try again.');
-      }
+      setOptimisticFollow(null);
     }
   });
 
@@ -76,12 +79,11 @@ const PostPage: React.FC = () => {
   }, [post?.data?.user?.is_following]);
 
   const handleLike = () => {
-    // 🦄 Nothing to see here, just unicorns debugging!
+    // Optimistically update UI
     likeMutation.mutate();
   };
 
   const handleFollow = () => {
-    // 🦄 Nothing to see here, just unicorns debugging!
     followMutation.mutate();
   };
 
@@ -147,21 +149,21 @@ const PostPage: React.FC = () => {
                 onClick={handleLike}
                 disabled={likeMutation.isPending}
                 className={`p-1.5 rounded-full border border-gray-300 transition-colors ${
-                  postData.userHasLiked ? 'bg-black border-black' : 'bg-gray-200 hover:bg-gray-300'
+                  (optimisticLike !== null ? optimisticLike : postData.userHasLiked) ? 'bg-black border-black' : 'bg-gray-200 hover:bg-gray-300'
                 }`}
               >
-                <HeartIcon size={20} className={postData.userHasLiked ? "text-white" : "text-black"} />
+                <HeartIcon size={20} className={(optimisticLike !== null ? optimisticLike : postData.userHasLiked) ? "text-white" : "text-black"} />
               </button>
               <button 
                 onClick={handleFollow}
                 disabled={followMutation.isPending}
                 className={`px-6 py-2 rounded-full font-semibold shadow transition-colors ${
-                  isFollowing 
-                    ? 'bg-gray-600 text-white hover:bg-gray-700' 
+                  (optimisticFollow !== null ? optimisticFollow : isFollowing)
+                    ? 'bg-gray-600 text-white hover:bg-gray-700'
                     : 'bg-black text-white hover:bg-gray-800'
                 }`}
               >
-                {isFollowing ? 'Following' : 'Follow'}
+                {(optimisticFollow !== null ? optimisticFollow : isFollowing) ? 'Following' : 'Follow'}
               </button>
             </div>
           </div>
@@ -210,7 +212,7 @@ const PostPage: React.FC = () => {
                     </span>
                     <span className="flex items-center text-base text-gray-500">
                       <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                      {postData.likes || 0} likes
+                      {(optimisticLikesCount !== null ? optimisticLikesCount : postData.likes) || 0} likes
                     </span>
                   </div>
                   {/* Post owner social media */}
@@ -375,7 +377,7 @@ const PostPage: React.FC = () => {
             </span>
             <span className="flex items-center text-xs text-gray-500">
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-              {postData.likes || 0}
+              {(optimisticLikesCount !== null ? optimisticLikesCount : postData.likes) || 0}
             </span>
           </div>
         </div>
