@@ -6,6 +6,7 @@ import { createPost } from '../services/api';
 import { useToast } from '../contexts/ToastContext';
 import { useNavigate } from 'react-router-dom';
 import UploadBox from '../components/UploadBox';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ImageIcon = FiImage as React.ComponentType<{ size?: number; className?: string }>;
 
@@ -28,6 +29,7 @@ const CreatePostPage: React.FC = () => {
   const [success, setSuccess] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     authService.getProfile().then(res => setProfile(res.data)).catch(() => setProfile(null));
@@ -82,7 +84,9 @@ const CreatePostPage: React.FC = () => {
       const data = await createPost(formData);
       setSuccess('Post created!');
       toast.showToast('Post Created Successfully');
-        navigate('/discover', { replace: true });
+      // Invalidate Discover posts query so Discover page refreshes
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      navigate('/discover', { replace: true });
     } catch (err: any) {
       setError(err?.message || 'Failed to create post.');
       toast.showToast(err?.message || 'Failed to create post.');
