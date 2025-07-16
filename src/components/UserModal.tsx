@@ -47,19 +47,19 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, user, onSignOut,
 
   const modal = (
     <div 
-      className="absolute bg-white border border-gray-300 w-80 max-h-96 overflow-hidden z-50"
+      className="absolute bg-white dark:bg-[#222222] border border-gray-300 dark:border-gray-700 w-80 max-h-96 overflow-hidden z-50"
       style={{
         top: anchorRef?.current ? anchorRef.current.getBoundingClientRect().bottom + window.scrollY + 8 : 0,
         right: anchorRef?.current ? window.innerWidth - anchorRef.current.getBoundingClientRect().right : 0,
       }}
     >
       {/* Header */}
-      <div className="border-b border-gray-300 p-4">
+      <div className="border-b border-gray-300 dark:border-gray-700 p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Account</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Account</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -67,7 +67,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, user, onSignOut,
           </button>
         </div>
         {user && (
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
             {user.firstName} {user.lastName}
           </p>
         )}
@@ -75,31 +75,31 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, user, onSignOut,
       {/* Tabs */}
       <div className="p-0">
         <div 
-          className="px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+          className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
           onClick={() => handleTabClick('settings')}
         >
-          <span className="text-gray-900">Settings</span>
+          <span className="text-gray-900 dark:text-gray-100">Settings</span>
         </div>
         <div 
-          className="px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+          className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
           onClick={() => handleTabClick('profile')}
         >
-          <span className="text-gray-900">Your profile</span>
+          <span className="text-gray-900 dark:text-gray-100">Your profile</span>
         </div>
         <div 
-          className="px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+          className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
           onClick={() => handleTabClick('posts')}
         >
-          <span className="text-gray-900">Posts</span>
+          <span className="text-gray-900 dark:text-gray-100">Posts</span>
         </div>
         <div 
-          className="px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+          className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
           onClick={() => handleTabClick('create-post')}
         >
-          <span className="text-gray-900">Create post</span>
+          <span className="text-gray-900 dark:text-gray-100">Create post</span>
         </div>
         <div 
-          className="px-4 py-3 cursor-pointer hover:bg-gray-50"
+          className="px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
           onClick={() => handleTabClick('sign-out')}
         >
           <span className="text-red-600">Sign out</span>

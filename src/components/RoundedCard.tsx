@@ -17,7 +17,7 @@ const RoundedCard: React.FC<RoundedCardProps> = ({
 }) => {
   return (
     <div 
-      className={`${width} ${height} ${padding} bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 ${className}`}
+      className={`${width} ${height} ${padding} bg-gray-100 hover:bg-gray-200 dark:bg-[#222222] rounded-full transition-colors duration-200 ${className}`}
     >
       {children}
     </div>

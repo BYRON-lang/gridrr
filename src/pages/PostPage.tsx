@@ -161,7 +161,7 @@ const PostPage: React.FC = () => {
   if (isLoading) {
     return (
       <>
-        <div className="min-h-screen w-full bg-white block sm:hidden">
+        <div className="min-h-screen w-full bg-white dark:bg-[#141414] block sm:hidden">
           <DiscoverHeader />
           <div className="flex justify-center items-center min-h-[300px]">
             <LoadingSpinner />
@@ -175,13 +175,13 @@ const PostPage: React.FC = () => {
   if (error || !post?.data) {
     return (
       <>
-        <div className="min-h-screen w-full bg-white block sm:hidden">
+        <div className="min-h-screen w-full bg-white dark:bg-[#141414] block sm:hidden">
           <DiscoverHeader />
           <div className="px-4 pt-4">
             <h1 className="text-[16px] font-medium text-left truncate text-red-500">Error loading post</h1>
           </div>
         </div>
-        <div className="min-h-screen w-full bg-white hidden sm:block">
+        <div className="min-h-screen w-full bg-white dark:bg-[#141414] hidden sm:block">
           <DiscoverHeader />
           <div className="pt-32 flex justify-center items-center">
             <div className="text-red-500">Error loading post</div>
@@ -199,21 +199,33 @@ const PostPage: React.FC = () => {
       <Helmet>
         <title>{postData.title} | Gridrr</title>
         <meta name="description" content={postData.description || 'View this creative post on Gridrr.'} />
+        {/* Open Graph meta tags for social sharing */}
+        <meta property="og:title" content={postData.title} />
+        <meta property="og:description" content={postData.description || 'View this creative post on Gridrr.'} />
+        <meta property="og:image" content={postData.image_urls?.[0] || '/assets/logo1.png'} />
+        <meta property="og:url" content={`https://gridrr.com/post/${postData.id}`} />
+        <meta property="og:type" content="article" />
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={postData.title} />
+        <meta name="twitter:description" content={postData.description || 'View this creative post on Gridrr.'} />
+        <meta name="twitter:image" content={postData.image_urls?.[0] || '/assets/logo1.png'} />
+        <meta name="twitter:url" content={`https://gridrr.com/post/${postData.id}`} />
       </Helmet>
       {/* Desktop and above: show full post, mobile: blank */}
-      <div className="hidden sm:block min-h-screen w-full bg-white">
+      <div className="hidden sm:block min-h-screen w-full bg-white dark:bg-[#141414]">
         {!isLoadingUser && (isAuthenticated ? <DiscoverHeader /> : <Header />)}
         <div className={isAuthenticated ? "pt-28" : "pt-20"}>
-          <div className="w-full bg-white border-b border-gray-200 px-16 py-4 flex items-center justify-between">
+          <div className="w-full bg-white dark:bg-[#141414] border-b border-gray-200 dark:border-gray-700 px-16 py-4 flex items-center justify-between">
             <div className="flex-1 flex justify-center">
               {/* Post title */}
-              <h1 className="text-4xl font-light text-center">{postData.title}</h1>
+              <h1 className="text-4xl font-light text-center text-gray-900 dark:text-gray-100">{postData.title}</h1>
             </div>
             <div className="flex items-center gap-4">
               <button 
                 onClick={isAuthenticated ? handleLike : () => navigate('/login')}
                 disabled={likeMutation.isPending}
-                className={`p-1.5 rounded-full border border-gray-300 transition-colors bg-gray-200 hover:bg-gray-300 flex items-center justify-center ${likePop ? 'animate-like-pop' : ''}`}
+                className={`p-1.5 rounded-full border border-gray-300 dark:border-gray-700 transition-colors bg-gray-200 dark:bg-[#222222] hover:bg-gray-300 dark:hover:bg-gray-800 flex items-center justify-center ${likePop ? 'animate-like-pop' : ''}`}
                 style={{ minWidth: 36, minHeight: 36 }}
               >
                 <svg
@@ -249,7 +261,7 @@ const PostPage: React.FC = () => {
           {/* Main content row: left and right cards */}
           <div className="flex px-16 gap-8 mt-4">
             {/* Left-side card */}
-            <div className="bg-white pt-0 pb-0 px-6 w-[550px] h-[600px] rounded-none flex flex-col">
+            <div className="bg-white dark:bg-[#141414] pt-0 pb-0 px-6 w-[550px] h-[600px] rounded-none flex flex-col">
               {/* Post image removed */}
               {/* Date and tags row */}
               <div className="flex items-start justify-between mt-4 mb-4">
@@ -411,7 +423,7 @@ const PostPage: React.FC = () => {
         </div>
       </div>
       {/* Mobile: blank page except header and title/buttons row */}
-      <div className="block sm:hidden min-h-screen w-full bg-white">
+      <div className="block sm:hidden min-h-screen w-full bg-white dark:bg-[#141414]">
         {isAuthenticated ? <DiscoverHeader /> : <Header />}
         <div className={isAuthenticated ? "px-4 pt-24" : "px-4 pt-20"}>
           <div className="flex items-center justify-between gap-2">
@@ -419,7 +431,7 @@ const PostPage: React.FC = () => {
             <button 
               onClick={handleLike}
               disabled={likeMutation.isPending}
-              className={`p-1.5 rounded-full border border-gray-300 transition-colors bg-gray-200 hover:bg-gray-300 flex items-center justify-center ${likePop ? 'animate-like-pop' : ''}`}
+              className={`p-1.5 rounded-full border border-gray-300 dark:border-gray-700 transition-colors bg-gray-200 dark:bg-[#222222] hover:bg-gray-300 dark:hover:bg-gray-800 flex items-center justify-center ${likePop ? 'animate-like-pop' : ''}`}
               style={{ minWidth: 36, minHeight: 36 }}
             >
               <svg
