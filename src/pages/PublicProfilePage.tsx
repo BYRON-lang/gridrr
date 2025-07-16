@@ -19,6 +19,16 @@ import PublicProfileSkeleton from '../components/loaders/PublicProfileSkeleton';
 const STATS_CARD_WIDTH = 380;
 const HEADER_HEIGHT = 80;
 
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 const PublicProfilePage: React.FC = () => {
   const { displayName } = useParams<{ displayName: string }>();
   const queryClient = useQueryClient();
@@ -220,7 +230,7 @@ const PublicProfilePage: React.FC = () => {
                 <div className="text-red-600">Error loading posts</div>
               ) : posts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
-                  {posts.map((post: any, idx: number) => (
+                  {shuffleArray(posts).map((post: any, idx: number) => (
                     <CategoryCard
                       key={post.id || idx}
                       title={post.title}

@@ -7,6 +7,16 @@ import { getPosts } from '../services/api';
 import CategoryCard from '../components/CategoryCard';
 import CategoryCardSkeleton from '../components/loaders/CategoryCardSkeleton';
 
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 const NewestPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { data: posts, isLoading, error } = useQuery({
@@ -31,7 +41,7 @@ const NewestPage: React.FC = () => {
           ) : error ? (
             <div className="col-span-full text-center py-8 text-red-500">Error loading newest posts</div>
           ) : newestPosts.length > 0 ? (
-            newestPosts.map((post: any, idx: number) => (
+            shuffleArray(newestPosts).map((post: any, idx: number) => (
               <CategoryCard
                 key={post.id || idx}
                 onClick={() => window.location.href = `/post/${post.id}`}

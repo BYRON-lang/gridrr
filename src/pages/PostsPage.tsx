@@ -6,6 +6,16 @@ import { getMyPosts } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 import LoadingSpinner from '../components/loaders/LoadingSpinner';
 
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 const PostsPage: React.FC = () => {
   const { user, isAuthenticated, isLoadingUser } = useAuth();
 
@@ -34,7 +44,7 @@ const PostsPage: React.FC = () => {
           ) : error ? (
             <div className="text-red-600">Error loading posts</div>
           ) : posts && posts.length > 0 ? (
-            posts.map((post: any, idx: number) => (
+            shuffleArray(posts).map((post: any, idx: number) => (
               <YourPostCard
                 key={post.id || idx}
                 title={post.title}

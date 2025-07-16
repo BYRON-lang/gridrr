@@ -10,7 +10,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../services/api';
 import CategoryCardSkeleton from '../components/loaders/CategoryCardSkeleton';
 import { Helmet } from 'react-helmet-async';
-import Footer from '../components/Footer';
+
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 const DiscoverPage: React.FC = () => {
   const [selectedSortFilter, setSelectedSortFilter] = useState('latest');
@@ -142,7 +151,7 @@ const DiscoverPage: React.FC = () => {
                   <div className="text-red-500">Error loading posts</div>
                 </div>
               ) : posts && posts.length > 0 ? (
-                posts.map((post: any, idx: number) => (
+                shuffleArray(posts).map((post: any, idx: number) => (
                   <div key={post.id || idx}>
                     <CategoryCard 
                       onClick={() => handleCategoryClick(post.id || idx)} 
@@ -159,7 +168,6 @@ const DiscoverPage: React.FC = () => {
               )}
             </div>
           </div>
-          <Footer />
         </div>
       </>
     </ProtectedRoute>

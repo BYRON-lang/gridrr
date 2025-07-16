@@ -10,6 +10,16 @@ import { useNavigate } from 'react-router-dom';
 
 const FireIcon = FaFire as React.ComponentType<{ className?: string }>;
 
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 const TrendingPage = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -36,7 +46,7 @@ const TrendingPage = () => {
           ) : error ? (
             <div className="col-span-full text-center py-8 text-red-500">Error loading trending posts</div>
           ) : posts && posts.length > 0 ? (
-            posts.map((post: any, idx: number) => (
+            shuffleArray(posts).map((post: any, idx: number) => (
               <CategoryCard
                 key={post.id || idx}
                 onClick={() => navigate(`/post/${post.id}`)}

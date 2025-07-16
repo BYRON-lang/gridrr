@@ -25,6 +25,16 @@ const homeFilters = [
   'Portfolio',
 ];
 
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 const HomePage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
@@ -128,10 +138,9 @@ const HomePage: React.FC = () => {
               ) : error ? (
                 <div className="text-red-600 dark:text-red-400">Error loading posts</div>
               ) : posts && posts.length > 0 ? (
-                posts.slice(0, 20).map((post: any, idx: number) => (
-                  <div>
+                shuffleArray(posts).slice(0, 20).map((post: any, idx: number) => (
+                  <div key={post.id || idx}>
                     <CategoryCard
-                      key={post.id || idx}
                       title={post.title}
                       time={new Date(post.created_at).toLocaleDateString()}
                       image={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : undefined}
@@ -164,7 +173,7 @@ const HomePage: React.FC = () => {
                 animation: 'scroll-gallery 30s linear infinite',
               }}
             >
-              {posts.slice(0, 10).map((post: any, idx: number) => (
+              {shuffleArray(posts).slice(0, 10).map((post: any, idx: number) => (
                 <div key={post.id || idx} className="flex-shrink-0 rounded-xl overflow-hidden shadow-md bg-white dark:bg-gray-800" style={{ width: 180, height: 100 }}>
                   <img
                     src={post.image_urls && post.image_urls.length > 0 ? post.image_urls[0] : '/assets/logo-space-blue.png'}

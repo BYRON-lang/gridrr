@@ -64,20 +64,22 @@ const Footer: React.FC = () => {
         </div>
       </div>
       {/* Desktop: show footer */}
-      <footer className="w-full h-16 flex items-center hidden sm:flex bg-transparent" style={{ marginLeft: 350, marginRight: 350, marginTop: 100 }}>
-        <img
-          src="/assets/logo.png"
-          alt="Gridrr Logo"
-          className="h-10 w-auto object-contain dark:hidden"
-          style={{ minWidth: 60 }}
-        />
-        <img
-          src="/assets/logo-white.png"
-          alt="Gridrr Logo"
-          className="h-10 w-auto object-contain hidden dark:inline"
-          style={{ minWidth: 60 }}
-        />
-        <nav className="flex items-center gap-20 ml-8">
+      <footer className="w-full flex-col flex items-center justify-center py-2 gap-12 hidden sm:flex bg-transparent">
+        <div className="flex flex-col items-center gap-2">
+          <img
+            src="/assets/logo.png"
+            alt="Gridrr Logo"
+            className="h-10 w-auto object-contain dark:hidden"
+            style={{ minWidth: 60 }}
+          />
+          <img
+            src="/assets/logo-white.png"
+            alt="Gridrr Logo"
+            className="h-10 w-auto object-contain hidden dark:inline"
+            style={{ minWidth: 60 }}
+          />
+        </div>
+        <nav className="flex flex-wrap justify-center gap-8">
           {footerTabs.map(tab => (
             (tab.label === 'About' || tab.label === 'Ads' || tab.label === 'Resources' || tab.label === 'Careers') ? (
               <Link
@@ -97,17 +99,19 @@ const Footer: React.FC = () => {
               </a>
             )
           ))}
-          <a href="https://facebook.com/gridrrofficial" target="_blank" rel="noopener noreferrer" className="text-black dark:text-white font-medium text-base hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">Facebook</a>
-          <a href="https://x.com/gridrrofficial" target="_blank" rel="noopener noreferrer" className="text-black dark:text-white font-medium text-base hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">Twitter/X</a>
-          <a href="https://www.instagram.com/gridrrofficial/" target="_blank" rel="noopener noreferrer" className="text-black dark:text-white font-medium text-base hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">Instagram</a>
         </nav>
+        <div className="flex flex-wrap justify-center gap-6">
+          <a href="https://facebook.com/gridrrofficial" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Facebook</a>
+          <a href="https://x.com/gridrrofficial" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Twitter/X</a>
+          <a href="https://www.instagram.com/gridrrofficial/" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Instagram</a>
+        </div>
+        <div className="flex flex-wrap justify-center gap-4">
+          <span className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs">© {new Date().getFullYear()} Gridrr. All rights reserved.</span>
+          <Link to="/terms" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Terms</Link>
+          <Link to="/privacy" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Privacy</Link>
+          <Link to="/cookies" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Cookies</Link>
+        </div>
       </footer>
-      <div className="w-full py-3 flex items-center gap-6 hidden sm:flex bg-transparent" style={{ textAlign: 'left', marginLeft: 350, marginBottom: 0, marginTop: 70, }}>
-        <span className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs">© {new Date().getFullYear()} Gridrr. All rights reserved.</span>
-        <Link to="/terms" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Terms</Link>
-        <Link to="/privacy" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Privacy</Link>
-        <Link to="/cookies" className="text-gray-400 dark:text-gray-300 font-poppins font-normal text-xs hover:text-blue-500 transition-colors duration-200">Cookies</Link>
-      </div>
     </div>
   );
 };
