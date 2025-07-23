@@ -108,6 +108,14 @@ const Header: React.FC = () => {
                 )}
               </div>
               <Link to="/resources" className="text-gray-700 hover:text-black hover:underline underline-offset-8 text-base font-medium transition-colors">Resources</Link>
+              <a 
+                href="https://jobs.gridrr.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-black hover:underline underline-offset-8 text-base font-medium transition-colors"
+              >
+                Jobs & Gigs
+              </a>
             </nav>
           </div>
           <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 pr-0 md:pr-10 w-full md:w-auto">
@@ -174,6 +182,15 @@ const Header: React.FC = () => {
                   )}
                 </div>
                 <Link to="/resources" className="text-gray-700 hover:text-black text-lg font-medium transition-colors" onClick={() => setMenuOpen(false)}>Resources</Link>
+                <a 
+                  href="https://jobs.gridrr.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-700 hover:text-black text-lg font-medium transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Jobs & Gigs
+                </a>
               </nav>
               <div className="flex flex-col space-y-4">
                 <button 

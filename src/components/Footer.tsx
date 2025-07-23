@@ -5,6 +5,7 @@ const footerTabs = [
   { label: 'About', href: '/about' },
   { label: 'Ads', href: '/ads' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Jobs & Gigs', href: 'https://jobs.gridrr.com', external: true },
   { label: 'Blog', href: '/blog' },
   { label: 'Careers', href: '/careers' },
   { label: 'Support', href: '/support' },
@@ -29,7 +30,7 @@ const Footer: React.FC = () => {
         />
         <nav className="flex flex-wrap justify-center gap-4 w-full px-2">
           {footerTabs.map(tab => (
-            (tab.label === 'About' || tab.label === 'Ads' || tab.label === 'Resources' || tab.label === 'Careers') ? (
+            (!tab.external && (tab.label === 'About' || tab.label === 'Ads' || tab.label === 'Resources' || tab.label === 'Careers')) ? (
               <Link
                 key={tab.label}
                 to={tab.href}
@@ -81,7 +82,7 @@ const Footer: React.FC = () => {
         </div>
         <nav className="flex flex-wrap justify-center gap-8">
           {footerTabs.map(tab => (
-            (tab.label === 'About' || tab.label === 'Ads' || tab.label === 'Resources' || tab.label === 'Careers') ? (
+            (!tab.external && (tab.label === 'About' || tab.label === 'Ads' || tab.label === 'Resources' || tab.label === 'Careers')) ? (
               <Link
                 key={tab.label}
                 to={tab.href}
