@@ -10,7 +10,7 @@ import NewestPage from './pages/NewestPage';
 import TagPage from './pages/TagPage';
 import LoadingSpinner from './components/loaders/LoadingSpinner';
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { Analytics } from "@vercel/analytics/react";
+import { getGeoInfo, recordAnalytics, AnalyticsData } from './services/analytics';
 
 // Lazy imports after all other imports
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -128,7 +128,6 @@ function App() {
       </ToastProvider>
     </HelmetProvider>
       <SpeedInsights />
-      <Analytics />
     </>
   );
 }
