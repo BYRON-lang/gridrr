@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './api';
 
 /**
  * Data sent for analytics event.
@@ -50,7 +50,7 @@ function detectDeviceType(userAgent?: string): 'desktop' | 'mobile' {
 export async function recordAnalytics({ userId, country, page, referrer, userAgent, app, deviceType }: AnalyticsData): Promise<void> {
   try {
     const finalDeviceType = deviceType || detectDeviceType(userAgent);
-    await axios.post('/api/analytics', {
+    await api.post('/analytics', {
       userId,
       country,
       page,
