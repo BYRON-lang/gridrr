@@ -40,11 +40,75 @@ const TagPage: React.FC = () => {
     'Portfolio': 'Personal and professional portfolio site inspiration.',
   };
 
+  const getMetaDescription = () => {
+    if (tagName && tagDescriptions[tagName]) {
+      return `${tagDescriptions[tagName]} Explore ${tagName} designs and creative inspiration on Gridrr.`;
+    }
+    return tagName 
+      ? `Discover amazing ${tagName} designs and creative inspiration on Gridrr. Browse curated collections from talented designers worldwide.`
+      : 'Explore design tags and categories on Gridrr. Find inspiration across various design disciplines and creative fields.';
+  };
+
+  const getPageTitle = () => {
+    return tagName ? `${tagName} Designs & Inspiration - Gridrr` : 'Design Tags - Gridrr';
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{tagName ? `Posts tagged "${tagName}"` : 'Tag'} - Gridrr</title>
-        <link rel="canonical" href="https://gridrr.com/explore/tag/" />
+        <title>{getPageTitle()}</title>
+        <meta name="description" content={getMetaDescription()} />
+        <link rel="canonical" href={`https://gridrr.com/explore/tag/${tagName ? encodeURIComponent(tagName) : ''}`} />
+        <meta property="og:title" content={getPageTitle()} />
+        <meta property="og:description" content={getMetaDescription()} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://gridrr.com/explore/tag/${tagName ? encodeURIComponent(tagName) : ''}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={getPageTitle()} />
+        <meta name="twitter:description" content={getMetaDescription()} />
+        {tagName && (
+          <>
+            <meta name="keywords" content={`${tagName}, design, UI, UX, inspiration, creative, portfolio, gridrr`} />
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "CollectionPage",
+                "url": `https://gridrr.com/explore/tag/${encodeURIComponent(tagName)}`,
+                "name": `${tagName} Designs`,
+                "description": getMetaDescription(),
+                "mainEntity": {
+                  "@type": "ItemList",
+                  "name": `${tagName} Design Collection`,
+                  "description": tagDescriptions[tagName] || `Collection of ${tagName} designs`,
+                  "numberOfItems": posts?.length || 0
+                },
+                "breadcrumb": {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    {
+                      "@type": "ListItem",
+                      "position": 1,
+                      "name": "Home",
+                      "item": "https://gridrr.com"
+                    },
+                    {
+                      "@type": "ListItem",
+                      "position": 2,
+                      "name": "Explore",
+                      "item": "https://gridrr.com/explore"
+                    },
+                    {
+                      "@type": "ListItem",
+                      "position": 3,
+                      "name": tagName,
+                      "item": `https://gridrr.com/explore/tag/${encodeURIComponent(tagName)}`
+                    }
+                  ]
+                }
+              })}
+            </script>
+          </>
+        )}
       </Helmet>
       {isAuthenticated ? <DiscoverHeader /> : <Header />}
       <div className="pt-20 flex justify-center">
@@ -84,4 +148,4 @@ const TagPage: React.FC = () => {
   );
 };
 
-export default TagPage; 
+export default TagPage;

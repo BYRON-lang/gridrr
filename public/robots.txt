@@ -1,3 +1,22 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Allow: /search
+Allow: /explore/tag/
+Allow: /trending
+Allow: /newest
+Allow: /about
+Allow: /blog
+Allow: /careers
+Allow: /support
+Allow: /terms
+Allow: /privacy
+Allow: /post/
+Disallow: /discover
+Disallow: /settings
+Disallow: /posts
+Disallow: /profile
+Disallow: /create-post
+
+# Sitemap
+Sitemap: https://gridrr.com/sitemap.xml

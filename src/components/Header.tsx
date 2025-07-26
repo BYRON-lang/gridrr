@@ -91,6 +91,7 @@ const Header: React.FC = () => {
                 </button>
                 {exploreDropdownOpen && (
                   <div className="absolute left-0 top-full mt-0 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-2">
+                    <Link to="/search" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Search</Link>
                     <Link to="/trending" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Trending</Link>
                     <Link to="/newest" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Newest Posts</Link>
                     <div className="border-t my-2" />
@@ -165,6 +166,7 @@ const Header: React.FC = () => {
                   </button>
                   {exploreDropdownOpen && (
                     <div className="absolute left-0 top-full mt-0 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-2">
+                      <Link to="/search" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Search</Link>
                       <Link to="/trending" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Trending</Link>
                       <Link to="/newest" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Newest Posts</Link>
                       <div className="border-t my-2" />
@@ -225,4 +227,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header; 
+export default Header;

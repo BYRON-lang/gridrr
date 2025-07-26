@@ -8,6 +8,7 @@ import { ToastProvider } from './contexts/ToastContext';
 import CookiesPopup from './components/CookiesPopup';
 import NewestPage from './pages/NewestPage';
 import TagPage from './pages/TagPage';
+import SearchPage from './pages/SearchPage';
 import LoadingSpinner from './components/loaders/LoadingSpinner';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { getGeoInfo, recordAnalytics, AnalyticsData } from './services/analytics';
@@ -116,6 +117,7 @@ function App() {
             <Route path="/cookies" element={<CookiesPage />} />
             <Route path="/trending" element={<TrendingPage />} />
             <Route path="/newest" element={<NewestPage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/explore/tag/:tagName" element={<TagPage />} />
             {/* Public profile route, must be after all other specific routes */}
             <Route path=":displayName" element={<PublicProfilePage />} />
