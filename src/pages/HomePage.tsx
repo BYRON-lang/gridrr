@@ -35,8 +35,11 @@ function shuffleArray<T>(array: T[]): T[] {
   return arr;
 }
 
+import { useEffect } from 'react';
+import { getGeoInfo, recordAnalytics } from '../services/analytics';
+
 const HomePage: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const navigate = useNavigate();
   // Fetch posts for the grid
@@ -46,6 +49,22 @@ const HomePage: React.FC = () => {
   });
 
   const filterScrollRef = useRef<HTMLDivElement>(null);
+
+  // Record analytics on mount
+  useEffect(() => {
+    (async () => {
+      const geo = await getGeoInfo();
+      await recordAnalytics({
+        userId: user?.id,
+        country: geo.country_name,
+        page: '/',
+        referrer: document.referrer,
+        userAgent: navigator.userAgent,
+        app: 'gridrr',
+      });
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const scrollFilters = (dir: 'left' | 'right') => {
     const el = filterScrollRef.current;

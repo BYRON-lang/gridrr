@@ -21,7 +21,12 @@ function shuffleArray<T>(array: T[]): T[] {
   return arr;
 }
 
+import { useEffect } from 'react';
+import { getGeoInfo, recordAnalytics } from '../services/analytics';
+import { useAuth } from '../hooks/useAuth';
+
 const DiscoverPage: React.FC = () => {
+  const { user } = useAuth();
   const [selectedSortFilter, setSelectedSortFilter] = useState('latest');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -51,6 +56,22 @@ const DiscoverPage: React.FC = () => {
   const handleCategoryClick = (postId: number) => {
     navigate(`/post/${postId}`);
   };
+
+  // Record analytics on mount
+  useEffect(() => {
+    (async () => {
+      const geo = await getGeoInfo();
+      await recordAnalytics({
+        userId: user?.id,
+        country: geo.country_name,
+        page: '/discover',
+        referrer: document.referrer,
+        userAgent: navigator.userAgent,
+        app: 'gridrr',
+      });
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleTagSelect = (tag: string) => {
     if (!selectedTags.includes(tag)) {
