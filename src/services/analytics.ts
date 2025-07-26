@@ -9,6 +9,8 @@ export interface AnalyticsData {
   page: string;
   referrer?: string;
   userAgent?: string;
+  app?: string; // Optional app field for analytics source
+  deviceType?: 'desktop' | 'mobile'; // Device type for analytics
 }
 
 /**
@@ -38,14 +40,24 @@ export async function getGeoInfo(): Promise<GeoInfo> {
  * Send analytics event to backend
  * @param analyticsData Analytics event data
  */
-export async function recordAnalytics({ userId, country, page, referrer, userAgent }: AnalyticsData): Promise<void> {
+function detectDeviceType(userAgent?: string): 'desktop' | 'mobile' {
+  if (!userAgent) return 'desktop';
+  const ua = userAgent.toLowerCase();
+  if (ua.includes('mobi') || ua.includes('android') || ua.includes('iphone') || ua.includes('ipad')) return 'mobile';
+  return 'desktop';
+}
+
+export async function recordAnalytics({ userId, country, page, referrer, userAgent, app, deviceType }: AnalyticsData): Promise<void> {
   try {
+    const finalDeviceType = deviceType || detectDeviceType(userAgent);
     await axios.post('/api/analytics', {
       userId,
       country,
       page,
       referrer,
       userAgent,
+      app: app || 'gridrr',
+      deviceType: finalDeviceType,
     });
   } catch (e) {
     // eslint-disable-next-line no-console
