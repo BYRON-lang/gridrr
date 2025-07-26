@@ -15,6 +15,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdShare } from 'react-icons/md';
 import PublicProfileSkeleton from '../components/loaders/PublicProfileSkeleton';
+import VerifiedBadge from '../components/VerifiedBadge';
 
 const STATS_CARD_WIDTH = 380;
 const HEADER_HEIGHT = 80;
@@ -124,7 +125,10 @@ const PublicProfilePage: React.FC = () => {
           <div
             className={`flex flex-1 flex-col items-center justify-start ${isAuthenticated ? 'pt-16' : 'pt-16'}`}
           >
-            <h1 className="text-5xl font-light text-black">{profileData.display_name || 'No Name'}</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-5xl font-light text-black">{profileData.display_name || 'No Name'}</h1>
+              {profileData.verified && <VerifiedBadge size={24} />}
+            </div>
             <p className="mt-4 text-lg text-gray-500 text-center max-w-xl">{profileData.bio || 'No bio provided.'}</p>
             {profileData.expertise && (
               <div className="mt-4 text-xl font-bold text-black text-center">{profileData.expertise}</div>
